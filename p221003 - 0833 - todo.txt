@@ -1,0 +1,62 @@
+p221003 - 0833|from: 2210050808 |to:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>> MESSAGING APP CLEAN-UP <<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+CODE FOR THE APP BELONGS IN: C:\Users\dsa21\OneDrive\Desktop\zettelkasten\Literature Notes\AAA Programming\Code Bank - My experiments\PHP 220120
+
+GOAL: to clean up chat_app220120 so that I can use it as a project item in my resume. The project goal is a proof of concept product.
+
+*WHAT TO DO/CLEAN UP:
+
+I) CHANGE FILE NAME:
+>
+
+
+II) CHANGE DATABASE NAME:
+> is it possible?
+
+> files that contain chat_app220120 as a database name:
+ > mysqli_connect_first.php
+  > lines commented out: 3, 6, 7, 8, 9, 15 
+  > lines not commented out: 18
+ > mysqli_connect_second.php
+
+III) DELETE UNECESSARY FILES:
+
+IV) CREATE GITHUB REPO
+
+V) ADD TO HIROKU
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>> * or instead of the above <<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<
+CODE FOR THE APP BELONGS IN: C:\Users\dsa21\OneDrive\Desktop\zettelkasten\Literature Notes\AAA Programming\Code Bank - My experiments\PHP 220120
+
+1) learn how to treat a separate folder as a repo
+2) copy the messaging app to the app folder
+3) initialize a git folder in the app folder
+4) remotely create a repo in /MAMP
+5) push the working directory to Mamp repo.
+6) push the working directory to GitHub repo.
+
+7) either create a new database, or rename the current database.
+8) rename the chat_app file
+9) in VS Studio Code, find "chat_app" and replace globally on each page.
+
+
+--------------vvv IDEAS vvv--------------
+
+- Rename database
+ > But there are erroneous enteries, so I'd rather have a new db.
+
+- Duplicate database
+ > Probably not possible for security reasons.
+
+- Create new database
+ > Ultimately this may be the only & best solution
+
+- choose different name for filename and database
+ > separate names will be less confusing.
+
+-----------------------------------------

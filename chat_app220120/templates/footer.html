@@ -1,0 +1,18 @@
+<?php
+//include("functions/functions_login_registration.php");
+?>
+
+<footer class="box">
+    <p>----------FOOTER----------</p>
+    <p>
+        <?php 
+        $display_user_links = session_user_logged_in(1) ? '<a href="logout.php">|log out|</a>' : '<a href="login.php">|log in|</a>';
+        print '<p>' . $display_user_links . '</p>' .
+        '<p>' . date('g:ia, l F j, Y ') . '</p>';
+        ?>
+    </p>
+    <p>Message app 220120 begun on 01/20/2022</p>
+</footer>
+</body>
+</html>
+<?php ob_end_flush(); ?>

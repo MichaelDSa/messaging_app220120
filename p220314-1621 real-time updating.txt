@@ -1,0 +1,12 @@
+p220314-1621 real-time updating
+I am reasearching how to update my messaging web app in real-time.
+QUESTIONS: 
+ > if the app updates in real-time using AJAX, which is client-side JS, is it secure? Can people see the code? Does it provide access to the database?
+ > Is it better to use websockets to send database updates to the client-side AJAX?
+
+RESEARCH:
+
+ LINKS:
+ > https://stackoverflow.com/questions/46615539/php-realtime-updates
+  > The users here discuss real-time updating, websockets, AJAX, websocketd, Ratchet (for PHP), hosting websockets.
+

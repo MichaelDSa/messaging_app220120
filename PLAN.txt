@@ -1,0 +1,264 @@
+***********************************************
+********/////////////////////////////**********
+********///////// CHAT APP //////////**********
+********/////////////////////////////**********
+***********************************************
+
+
+1) create main database
+  -> CODE:
+    -> 
+
+
+
+2) Create new-user creation page
+
+  -> do I store a username/password table separately from a table that stores content, OR do I store one table with username/password/content??
+
+	I'll walk through the process of creating a new user, logging in, and sending my first message.:
+
+	i) user successfully creates username/password.
+	  -> new table is created, storing username & password.
+
+	ii) user logs in
+	  -> DB is checked to see if there is a user with the same name
+	  -> if the user's table is found, provided password is verified.
+  	    -> password matches!
+	      -> user now has access to send message screen. The sent messages will be stored in the database.
+	        -> table is vulnerable if any message contains SQL injection!
+	          -> THE REAL PROBLEM IS "HOW DO I PREVENT SQL INJECTION?"
+		    -> use mysqli_real_escape_string(), check manual for mysqli_query(). There is a waring there about sql injection.
+		  -> another question is "CAN USER LOG IN FASTER WITH 2 TABLES?"
+		    -> I doubt it.. unless the usr/psswd table is using redis, while the user/message table is using MySQL.. 2 DB doesn't make sense
+	    -> User can now send messages.
+	      -> USER SENDS 1000 MESSAGES TO 250 OTHER USERS.
+		-> These messages must now be stored as conversations. THERE WILL BE 250 CONVERSATIONS with at least 4 messages per conversation.
+		  -> a CONVERSATION TABLE can be created by this user. 
+		  -> - OR - a 'PARTICIPANTS' COLUMN can be created. conversations will be listed based on unique 'participant' members.
+		    -> i.e.: User is larry. There are 25 messages with Moe, 15 messages with Curly, 5 messages with Moe & Curly. That = 3 conversations.
+		      -> find a way to break down 'particpants' colum into unique conversations.
+			-> retrieve messages WHERE 'paricipants consist of a unique group'
+
+	iii) CONCLUSION: create one table only. Look up mysqli_query() in PHP manual to understand SQL injection.
+	  ->table must contain: ID|USERNAME|PASSWORD|PARTICIPANTS|USER|MESSAGE|DATE_TIMESTAMP|
+	    -> QUESTION: When a user sends a message, how does that message get written to the other user's table?
+	      -> this probably depends on the permissions of the user, or a higher authority user (i.e.: the app) will take the message, verify that the adressee is a user, and write to the appropriate table.
+		-> this is something to explore before going further.
+	      -> ANSWER: for this purpose, I will use a single MySQL user to create all tables. 
+	        -> Each user will be associated with their own table. 
+		  -> so 'logging in' simply means verifying that the user has a table. 
+		-> the MySQL user will execute all table modifictions.
+
+	iv) WRONG CONCLUSION: iii) was the wrong conclusion. 
+	  -> the right conclusion is that we need a table just for email addresses, usernames & passwords because 
+	    a) I don't know how to search all tables of a database.
+	    b) I don't know if a command that writes to a non-existant table will work, like it did when I mispelled a DB name and it worked.
+	    c) For verification, it's better to have a table with fewer indexes to search through. A single table sys. will contain all messages.
+	      -> the 'authentication' table can create a name for the user's table. 
+	
+		DATABASE DESIGN:
+		  -> AUTHENTICATION TABLE:  ID|UNIQUE_USERNAME|EMAIL|PASSWORD|DATE_TIMESTAMP
+
+		  -> USAGE TABLE: ID|USERNAME|PARTICIPANTS|SPEAKER|MESSAGE|DATE_TIMESTAMP
+
+
+
+	COMMAND FOR CREATING A USER'S TABLE:
+		
+	  $sql = "CREATE TABLE username ( " .
+		 "id INT NOT NULL AUTO_INCREMENT, " . 
+		 "username VARCHAR NOT NULL, " .
+		 "password VARCHAR NOT NULL, " . 
+		 "participants TEXT NOT NULL, " . 
+		 "user VARCHAR, " . 
+		 "message LONGTEXT, " . 
+		 "timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " . 
+		 "PRIMARY KEY (ID) " . 
+		 ") CHARACTER SET utf8"; 
+
+3) Create login for existing users.
+  -> should the login form have its own page, or is it better to have a central page for all funcitons?
+    -> in this case, when the form is submitted, it will be checked by form_submit().
+      -> form_submit() will work for all forms. it can take a string parameter which indicates which form has been submitted.
+        -> the functionality of the function will be separated by the if statements.
+    -> alternatively, the login form can be checked by a designated function.
+      -> whether i use a designated or central function, it must have this functionality:
+        /-> it must check if the $_SERVER['REQUEST_METHOD'] == 'POST'.
+        /-> it must check the username exists in the authentication table
+        /-> it must check that the password is in the authentication table
+        /-> it must check that the password and the username match on the same row (id)
+        /-> it must check if the user has a conversation table
+          *-> if the user does not have a table, should I create one? (this goes to IDEAS)
+
+
+---------------------TASKS ABOVE THIS LINE ARE COMPLETE-------------------------------------------------
+
+4) Create page/interface for sending a message to another user.
+
+CREATE CHAT APP:
+
+THE INTERFACE:
+>will start with simple html form data. minimal CSS. Styling to be done later.
+>will need a text field with a 'send' button.
+ >it will be good if on 'enter', new line is created in composition, instead of sending the message. (goes to IDEAS)
+  >this can be figured out later. might just be an html thing.
+ >pressing send will send the message to both the user's and the recipient's tables.
+  >if userB is not logged in, and recieves a message from userA, there should be a 'new message' indicator.
+  >if userB is logged in, is conversing with userC and recieves a message from userA, a 'new message from userA' indicator should appear in real time.
+   > if userB is logged in, is conversing with userA, all userA's new messages should appear in the 'conversation window' in real time.
+
+REAL-TIME UPDATING OF APPS:
+> new information from the DB should be sent to the users in real time.
+ > a loop can be made that constantly checks for new data.
+  >loop will be constructed in the following manner:
+   >1) LOOP STATEMENT (probably while loop) -> while(mysqli_affected_rows($dbc_first) < 1) {... loop will break, and refresh function displaying messages
+   >2) CONDITIONAL BRANCH:
+    >IF THERE IS NEW DATA IN USER'S TABLE:
+     >UPDATE USER'S INTERFACE WITH UNREAD DATA.
+	  >function reload; // RELOAD the function that displays the conversation.
+    >ELSE ??? WAIT X.XX SECONDS?
+   >THE LOOP IS POSSIBLY INFINITE.
+    >PAGE WILL RELOAD / LOOP IS EXITED: WHEN USER SENDS MESSAGE (action="chat_app.php", or header('chat_app.php').
+
+QUESTIONS:
+>will the while loop freeze the program?
+>is it efficient to constantly check the DB for new data in a while loop? 
+ >should a timer be implemented to check less frequently?
+ >should a temporary table be implemented foreach message?
+  >advantage: MySQL will not have to check for new entries.
+   >the new table data will sent right away, and then will be preserved in each recipient's tables.
+    >I haven't learned enough about MySQL to know what a temporary table is supposed to do.
+	 >Temporary tables are used because they contain a result set (from already existing data, not new data like in our case).
+	  >the result set, which can comprise of data from different tables, is meant for frequent access to the same data, so that fewer commands are dealt with.
+  >disadvantage: constant temporary table creation might be less efficient than checking for and accessing new data.
+  >NO TEMPORARY TABLE. - it makes sense not to use temporary tables.
+
+>will updating the displayed data refresh the whole screen?
+ > will updating the whole screen be a problem?
+  >problem 1) the screen may update while the user is typing a message.
+   >SOLUTION: make the UI for typing a message a sticky form. use CSS to focus cursor on form. 
+
+
+
+>WILL THE NEW-DATA-ACQUISITION LOOP REQUIRE CONCURRENCY?
+
+
+--------------------WHERE TO START:-----------------------------------------
+>first make a form that sends a message to a recipient's table, while storing it in their own table.
+ >1)make form: text field(recipient) + text field(message) + button. on action, button reloads page.
+
+INTERMITTENT TASK: ESTABLISH SESSIONS AND/OR COOKIES ON ALL PAGES.
+                   >cookies/session must be implemented in order to get the sender's username. 
+                   >The username is necessary to send data to the user's table.
+                   >cookies/session must be started before any messaging can take place.
+				    >at what point in the process do I start the session, send the cookie?
+					 >On login.php page: user info obtained. This is where I need it now.
+					 >On index.php: can be done later. Advantages:
+					  >Possible to see if the user is a member who is logged in.
+					   >For this reason, sessions should be implemented on all pages.
+					    >user options should be made available dynamically.
+						>This is a good reason to learn to use sessions & cookies.
+						
+---------------above tasks from here to WHERE TO START: are complete-------------------------------------
+
+  >the form must insert the message data in to both user's tables.
+   > the structure of each users table is: (id|username|participants|speaker|message|viewed|date_entered)
+    >FEATURE: group messaging -> sending a message to more than one recipient.
+	 >in the recipient field in the send form, users can separate users with a comma.
+	  >$_POST['recipient'] will have a comma separated list of users.
+	  >$_POST['recipient'] will change to $_POST['recipients']
+	  >$_POST['recipients'] will be sent to form_handler() in 'functions/functions_login_registration.php'
+       >use strtok(): (•	strtok(string $string, string $token): string|false 	  )
+	   >or use explode(): explode(string $separator, string $string, int $limit = PHP_INT_MAX): array
+	    >whichever function is used, spaces will have to be removed using trim(): •	trim(string $string, string $characters = " \n\r\t\v\0"): string
+
+	    >the list of users will become an array.
+		>a funcion made to insert messages into user's tables will be created. 
+		
+		TASKLIST:
+		1)CHANGE $_POST['recipient'] to $_POST['recipients']
+		2)Make a function for form_handler():
+		 >Create a function that can take the string from $_POST['recipients'] and make an array of individual usernames.
+		 
+		 >each username then gets validated.
+		3)Create functions form_valid_usernames() and form_invalid_usernames(). both functions return arrays.
+		  >usernames that are invalid are added to a function called invalid_usernames, which will return a string array.
+		   >if there are invalid usernames, the message does not send. all invalid usernames are removed from the sticky field.
+		   >The interface will list the participants who are invalid in the form message.
+		    >Message: These names cannot be found: (names from invalid_usernames()). Please try again.
+			 >only valid users will remain in the sticky field.
+		 >make a sandboxed function to see if it works.	  
+	  
+		 
+	  4)make function to enter the message into the tables of the recipients only if all usernames in the field are valid. See 2) & 3) below.
+	   >1)create $sender = $_SESSION['session_username'];
+	   >2)create $recipients
+	   >3)create $message
+	   >4)create function to send message to all valid user's tables.
+	    >$sender must be included in array[0] in participants. Remaining indices after array[0] should be in alphabetical/natural order.
+		 >$sender must be included only once, even if $sender is the only recipient. -- NO, DON'T DO THAT.
+		 >there should be no duplicate names. For that matter, there should be no duplicate names in ANY recipient list. -- NOT TRUE. THE TABLE NAME, AND THE SENDER ARE THE LAST TWO INDICES OF THE PARTICIPANTS LIST. ALWAYS. CONSISTENTLY. THIS SHOULD MAKE CONVENIENCES LATER.
+		  >CHECKLIST: messages_send(DONE), form_valid_usernames(DONE), form_separate_recipient_usernames(DONE), form_invalid_usernames(DONE), 
+	   ------------------------- 4)make function...
+		
+	  
+
+ >2)mysqli_query: save message in user's table
+ >3)mysqli_query: save message in recipient's table
+
+
+ >4)display all messages between these two users with the most recent one on top. -- NO, DON'T DO THAT. MAKE LINKS TO ALL CONVERSATIONS IN THE TABLE.
+  >There should be an access link to this conversation on each user's page.
+   >When it's clicked, each link shows its whole conversation.
+    >there whould be the option to continue the conversation.
+	>therefore, te conversation should be shown on the messages page
+   >There should be a link for each conversation.
+    >the most recent link should be on top.
+   
+   
+ >**THIS IS NOT POSSIBLE** 5)make a loop that listens for changes to the user's database.
+  >** NOT POSSIBLE** if there is a chenge, header(self).
+
+5) create page/interface that shows list of conversations.
+  -> When clicked, each conversation can expand, showing the whole interaction.
+    -> On this page, you can choose to delete the whole conversation.
+
+
+>5a) MAKE IT LOOK GOOD:
+ > I updated all forms, header, and footer using only a few inline CSS lines, and Bulma CS interface. it look ok for now.
+
+
+
+---------------------------------------above done to TASKLIST (line 178): ----------------------------------
+
+>5b) make the messages update in real time.
+ > see how soon you can achieve this by watching tutorials.
+ > study JavaScript
+ > study websockets
+ > QUESTION: if JavaScript is updating a web app in real time with information from a database, how secure is this situation? 
+  > Does JS have a way of hiding access to the database?
+  > research on this matter SEE: p220314-1621 real-time updating
+
+
+
+
+6) Friend management page: you can choose: 
+   i) to block a user
+   ii) to only accept messages and converse with friends.
+
+7) Refine how it looks
+> Ideas go here:
+ > use bootstrap instead of Bulma?
+ > do all the CSS from scratch?
+ > make the conversation into a fixed sized frame with a scrollbar?
+ > put the address/message/send bar at the bottom?
+
+IDEAS:
+-> make forms modular - as functions in a separate file, so that they can be utilized anywhere. 
+  -> Forms will be able to appear under certain conditions, such as if cookie/session has expired.
+-> in chat app, user can edit message if it has not been replied to or seen by other user.
+-> if on login, a user does not have a designated table, a new one will be created.
+-> in the chat interface, when a user is typing a message, on 'enter', new line is created instead of sending message.
+-> in a 'show conversations' page, each conversation is represented by unique participant group. click on the group to show the message.
+ -> another feature: a search can be performed showing all user's conversations containing usernames specified in a search field.
+  ->from date: and to date: fields can be added.
