@@ -9,17 +9,25 @@ GOAL: to clean up chat_app220120 so that I can use it as a project item in my re
 *WHAT TO DO/CLEAN UP:
 
 I) CHANGE FILE NAME:
->
+> I don't like the file name, 'Chat_app220120'
 
 
 II) CHANGE DATABASE NAME:
-> is it possible?
+> The database name is 'Chat_app220120'. I want to change the databse name.
+ > is it possible?
+  > I could try:
+   > 1) duplicating the database with a different name.
+   > 2) reimplementing a new database with the old MySQL code, but with a new name.
+   > 3) a new approach without using the MySQL command-line application:
+       > use php code that will check if the database exists. if it does not exit, create the database, otherwise do nothing.
 
 > files that contain chat_app220120 as a database name:
- > mysqli_connect_first.php
-  > lines commented out: 3, 6, 7, 8, 9, 15 
-  > lines not commented out: 18
- > mysqli_connect_second.php
+ > Instead of manually searching for 'chat_app220120' on each line, just use VScode to find and replace globally. BUT FIRST: 1) make initial commit. 2) solve the MySQL problem.
+IGNORE > mysqli_connect_first.php
+IGNORE  > lines commented out: 3, 6, 7, 8, 9, 15 
+IGNORE  > lines not commented out: 18
+IGNORE > mysqli_connect_second.php
+
 
 III) DELETE UNECESSARY FILES:
 
@@ -33,14 +41,24 @@ V) ADD TO HIROKU
 >>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<
 CODE FOR THE APP BELONGS IN: C:\Users\dsa21\OneDrive\Desktop\zettelkasten\Literature Notes\AAA Programming\Code Bank - My experiments\PHP 220120
 
-1) learn how to treat a separate folder as a repo
-2) copy the messaging app to the app folder
-3) initialize a git folder in the app folder
-4) remotely create a repo in /MAMP
-5) push the working directory to Mamp repo.
+DONE 1) learn how to treat a separate folder as a repo
+DONE 2) copy the messaging app to the app folder
+DONE 3) initialize a git folder in the app folder
+DONE 4) remotely create a repo in /MAMP
+DONE 5) push the working directory to Mamp repo.
+ > What was done: 
+   i) Cloned the original directory to a folder in MAMP.
+   ii) this clone can only do one thing in Git: $ git pull.
+      > The origin folder cannot push!
+      > all editing, committing & other git work to be done in origin folder. Clone is pull only - for the sake of being read by MAMP.
+	  
 6) push the working directory to GitHub repo.
 
 7) either create a new database, or rename the current database.
+  > Test: create a database in the PHP MyAdmin gui, then try cloning that database with a different name.
+7a) consider some code that: 
+   > 1. exports all data from db, 2. deletes all data from db on shutdown. 3. imports all data on startup.
+    > All MySQL import files can be version controled with Git. The MySQL server just functions as a server without storing the data.
 8) rename the chat_app file
 9) in VS Studio Code, find "chat_app" and replace globally on each page.
 
