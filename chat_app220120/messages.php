@@ -28,12 +28,43 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                     <div class="level-item">
                         <form action="messages.php" method="post">
                             <div class="field has-addons">
+                                <p id="JS_sticky_recipients" hidden>'. $sticky_recipients . '</p>
                                 <p class="control"><input class="input is-info" type="text" name="recipients" placeholder="Add Recipients..." value="' . $sticky_recipients . '"></p>
                                 <p class="control"><input class="input is-info" type="text" name="message" placeholder="Add Your Message..." value="' . $sticky_message . '"></p>
                                 <p class="control"><input class="button has-background-link has-text-white" type="submit" value="Send"></p> 
                             </div>
                         </form>
                     </div>
+                </div>
+                <div id="conversation">
+
+                // "AJAX for updating conversation:"
+                <script> 
+
+                let url = "http://localhost/chat_app220120/ajax_messages_display_conversation.php";
+                let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").innerHTML;       
+                
+                async function get_conversation(url) {
+
+                    // fetch communicate with the url. Send the recipient variables as POST data.
+                    let response = await fetch(url, {
+                        method: "POST", 
+                        headers: {"content-type": "application/x-www-form-urlencoded"},
+                        body: `sticky_recipients=${JS_sticky_recipients}`,
+                        });
+                    
+                    // convert the response to text
+                    let conversation = await response.text();
+
+                    // replace the conversation divs inner html.
+                    document.getElementById("conversation").innerHTML = conversation;
+
+                    // recursively call get_conversation at an interval of x seconds.
+                    setTimeout(() => get_conversation(url), 3000);
+                }
+                get_conversation(url);
+                
+                </script>
                 </div>
     ';
 
@@ -58,7 +89,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         form_send_message_display('','', $sticky_recipients, '');
 
         //display current conversation
-        messages_display_conversation($_POST['recipients']);
+        // messages_display_conversation($_POST['recipients']);
         
         //display 'links' to all separate, unique conversations (one of the user's past conversations)
         messages_conversation_links();
@@ -69,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         form_send_message_display('', '', $sticky_recipients, '');
 
         //display the selected conversation
-        print messages_display_conversation($_POST['unique_conversation']);
+        // messages_display_conversation($_POST['unique_conversation']);
 
         //display all past conversations
         messages_conversation_links();

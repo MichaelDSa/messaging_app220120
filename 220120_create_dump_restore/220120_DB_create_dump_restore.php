@@ -23,7 +23,7 @@ print "
 
 // DATABASE CRITERIA:
 $username = "root";
-$password = "1234";
+$password = "root";
 $hostname = "localhost";
 $database = "chat_app220120";
 $charset = 'utf8';
@@ -34,9 +34,9 @@ $charset = 'utf8';
 // Following variables set up for MAMP on Windows:
 // use forward slashes for compatiblilty with both mysql monitor and windows.
 // By default mamp host folder is /htdocs. Change 'clone' to 'htdocs' if that is so.
-$dump_file_db = "C:/mamp/clone/220120_create_dump_restore/dump_sql/dump.sql";// dump database and contents.
-$dump_file_t = "C:/mamp/clone/220120_create_dump_restore/dump_sql/dump_table.sql";
-$dump_file_ds = "C:/mamp/clone/220120_create_dump_restore/dump_sql/dump_structure_only.sql";
+$dump_file_db = "C:/mamp/clone1/220120_create_dump_restore/dump_sql/dump.sql";// dump database and contents.
+$dump_file_t = "C:/mamp/clone1/220120_create_dump_restore/dump_sql/dump_table.sql";
+$dump_file_ds = "C:/mamp/clone1/220120_create_dump_restore/dump_sql/dump_structure_only.sql";
 $mysqldump = "C:/MAMP/bin/mysql/bin/mysqldump";
 $mysql = "C:/MAMP/bin/mysql/bin/mysql";
 
