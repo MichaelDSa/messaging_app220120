@@ -359,7 +359,7 @@ function form_valid_usernames($array){
 
 function messages_display_conversation($recipients){
     if(empty($recipients)){
-        print "<p>NULL parameter</P>";
+        // print "<p>NULL parameter</P>";
         return;
     }
 

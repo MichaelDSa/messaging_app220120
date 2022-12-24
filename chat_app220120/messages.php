@@ -38,37 +38,40 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 </div>
                 <div id="conversation">
 
-                // AJAX for updating conversation:
+                <!--  AJAX for updating conversation: -->
                 <script> 
 
                 let url = "http://localhost/chat_app220120/ajax_messages_display_conversation.php";
                 let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").innerHTML;       
                 
-                get_conversation(url);
                 
                 // async function
                 async function get_conversation(url) {
-
+                    
                     // fetch response from the url. Send the recipient variables through headers.
                     let response = await fetch(url, {
                         method: "POST", 
                         headers: {"content-type": "application/x-www-form-urlencoded"},
                         body: `sticky_recipients=${JS_sticky_recipients}`,
-                        });                    
-                        
+                    });                    
+                    
                     // check if the response was successful.
                     if(response.ok && response.status == 200){
                             
                         // convert the response to text
                         let conversation = await response.text();
-
+                        
                         // replace the inner html of div with id="conversation"
                         document.getElementById("conversation").innerHTML = conversation;
                         
                         // call get_conversation to make recursive loop at a delay of x seconds.
                         setTimeout(() => get_conversation(url), 3000);
+                    } else {
+                        document.getElementById("conversation").innerHTML = "response not ok";
                     }
                 }
+
+                get_conversation(url);
 
                 //////////////////////////////////////////////////////////////////////////////////
 
