@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.24, for Win64 (x86_64)
 --
--- Host: localhost    Database: chat_app220120
+-- Host: localhost    Database: messaging_app220120
 -- ------------------------------------------------------
 -- Server version	5.7.24
 
@@ -29,7 +29,7 @@ CREATE TABLE `authentication` (
   `password` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `authentication` (
 
 LOCK TABLES `authentication` WRITE;
 /*!40000 ALTER TABLE `authentication` DISABLE KEYS */;
-INSERT INTO `authentication` VALUES (13,'user1','fakeemail@fake.com','1234','2022-01-24 20:32:28'),(14,'user2','fakeemail@fake.com','1234','2022-01-24 21:30:45'),(15,'user3','fakeemail@fake.com','1234','2022-01-24 22:05:56'),(16,'user4','fakeemail@fake.com','1234','2022-01-24 22:29:29'),(17,'user5','fakeemail@fake.com','1234','2022-01-24 22:45:28'),(18,'user6','fakeemail@fake.com','1234','2022-01-25 16:23:41'),(19,'user7','fakeemail@fake.com','1234','2022-01-25 16:35:59'),(20,'','','','2022-01-25 16:40:38'),(21,'','','','2022-01-25 18:53:06'),(22,'','','','2022-01-25 18:53:48'),(23,'user8','fakeemail@fake.com','1234','2022-01-26 13:29:14'),(24,'user9','fakeemail@fake.com','1234','2022-01-26 14:05:55'),(25,'user10','fakeemail@fake.com','1234','2022-01-26 14:16:43'),(26,'user11','fakeemail@fake.com','1234','2022-01-26 15:43:31'),(27,'test1','fakeemail@fake.com','1234','2022-02-11 10:46:45'),(28,'test2','fakeemail@fake.com','1234','2022-02-11 10:50:24'),(30,'test3','fakeemail@fake.com','1234','2022-02-11 11:52:21'),(31,'test4','fakeemail@fake.com','1234','2022-02-18 19:10:37'),(32,'test5','fakeemail@fake.com','1234','2022-02-18 19:17:56'),(33,'test6','fakeemail@fake.com','1234','2022-02-18 19:18:51'),(34,'test7','fakeemail@fake.com','1234','2022-02-18 19:19:26');
+INSERT INTO `authentication` VALUES (13,'user1','fakeemail@fake.com','1234','2022-01-24 20:32:28'),(14,'user2','fakeemail@fake.com','1234','2022-01-24 21:30:45'),(15,'user3','fakeemail@fake.com','1234','2022-01-24 22:05:56'),(16,'user4','fakeemail@fake.com','1234','2022-01-24 22:29:29'),(17,'user5','fakeemail@fake.com','1234','2022-01-24 22:45:28'),(18,'user6','fakeemail@fake.com','1234','2022-01-25 16:23:41'),(19,'user7','fakeemail@fake.com','1234','2022-01-25 16:35:59'),(20,'','','','2022-01-25 16:40:38'),(21,'','','','2022-01-25 18:53:06'),(22,'','','','2022-01-25 18:53:48'),(23,'user8','fakeemail@fake.com','1234','2022-01-26 13:29:14'),(24,'user9','fakeemail@fake.com','1234','2022-01-26 14:05:55'),(25,'user10','fakeemail@fake.com','1234','2022-01-26 14:16:43'),(26,'user11','fakeemail@fake.com','1234','2022-01-26 15:43:31'),(27,'test1','fakeemail@fake.com','1234','2022-02-11 10:46:45'),(28,'test2','fakeemail@fake.com','1234','2022-02-11 10:50:24'),(30,'test3','fakeemail@fake.com','1234','2022-02-11 11:52:21'),(31,'test4','fakeemail@fake.com','1234','2022-02-18 19:10:37'),(32,'test5','fakeemail@fake.com','1234','2022-02-18 19:17:56'),(33,'test6','fakeemail@fake.com','1234','2022-02-18 19:18:51'),(34,'test7','fakeemail@fake.com','1234','2022-02-18 19:19:26'),(35,'user12','fakeemail@fake.com','1234','2022-12-06 16:10:50'),(36,'user13','fakemail@fakemail.com','1234','2022-12-06 16:12:04');
 /*!40000 ALTER TABLE `authentication` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +261,7 @@ CREATE TABLE `user1` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `user1` (
 
 LOCK TABLES `user1` WRITE;
 /*!40000 ALTER TABLE `user1` DISABLE KEYS */;
-INSERT INTO `user1` VALUES (1,'user1','user2 user3 user4 user5 user6 user7 user8 user9 user10 user11 user1 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user1` VALUES (1,'user1','user2 user3 user4 user5 user6 user7 user8 user9 user10 user11 user1 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user1','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user1','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01'),(4,'user1','user1 user12','user12','test',0,'2022-12-17 19:09:16'),(5,'user1','user1 user12','user12','test2',0,'2022-12-17 19:11:38'),(6,'user1','user1 user12','user12','test3',0,'2022-12-17 19:12:04'),(7,'user1','user1 user12','user12','test4',0,'2022-12-17 19:13:29'),(8,'user1','user1 user12','user12','test5',0,'2022-12-17 19:13:47'),(9,'user1','user1 user12','user12','ervw',0,'2022-12-17 19:22:51'),(10,'user1','user1 user12','user12','ervw',0,'2022-12-17 19:24:11'),(11,'user1','user1 user12','user12','ervw',0,'2022-12-17 19:26:02'),(12,'user1','user1 user12','user12','ervw',0,'2022-12-17 19:27:40'),(13,'user1','user1 user12','user12','ervw',0,'2022-12-17 19:30:47'),(14,'user1','user1 user12','user12','faifnraeo',0,'2022-12-17 21:24:12');
 /*!40000 ALTER TABLE `user1` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +290,7 @@ CREATE TABLE `user10` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,7 +299,7 @@ CREATE TABLE `user10` (
 
 LOCK TABLES `user10` WRITE;
 /*!40000 ALTER TABLE `user10` DISABLE KEYS */;
-INSERT INTO `user10` VALUES (1,'user10','user11 user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user10` VALUES (1,'user10','user11 user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user10','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user10','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user10` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +319,7 @@ CREATE TABLE `user11` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,8 +328,66 @@ CREATE TABLE `user11` (
 
 LOCK TABLES `user11` WRITE;
 /*!40000 ALTER TABLE `user11` DISABLE KEYS */;
-INSERT INTO `user11` VALUES (1,'user11','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user11` VALUES (1,'user11','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user11','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user11','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user11` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user12`
+--
+
+DROP TABLE IF EXISTS `user12`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user12` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `participants` varchar(255) NOT NULL,
+  `speaker` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `viewed` tinyint(1) unsigned NOT NULL,
+  `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user12`
+--
+
+LOCK TABLES `user12` WRITE;
+/*!40000 ALTER TABLE `user12` DISABLE KEYS */;
+INSERT INTO `user12` VALUES (1,'user12','user12 user13','user12','first message: user12 to user13',0,'2022-12-06 16:13:01'),(2,'user12','user12 user13','user13','message received from user12 ',0,'2022-12-06 16:13:39'),(3,'user12','user12 user13','user12','He probably sees you like an older brother especialy if he\'s friends with your brother',0,'2022-12-06 16:17:01'),(4,'user12','user12 user13','user13','Litterally came here to say this kid probably thinks your\'re cook as hell. Probably looking at your like a sugo big brother.',0,'2022-12-06 16:17:50'),(5,'user12','user12 user13','user12','This, and try to include your brother aswell so...',0,'2022-12-06 16:18:18'),(6,'user12','user12 user13','user13','This! yes and please just be there for him. I know when I was a child I needed someone like you that i felt comfortable iwth taking too about things going on arougn me.',0,'2022-12-06 16:19:00'),(7,'user12','user12 user13','user12','This was all copied from a reddit post. Thanks for participating in this forgery.',0,'2022-12-06 16:39:07'),(8,'user12','user12 user13','user13','Your welcome. It was fun copying stereotypical posts from reddit. ',0,'2022-12-06 16:39:43'),(9,'user12','user12 user13','user12','If only we could do something about that box sizing, eh?',0,'2022-12-06 16:40:06'),(10,'user12','user12 user13','user13','Yes, and the conversation button, eh?',0,'2022-12-06 16:40:25'),(11,'user12','user12 user13','user12','Right.',0,'2022-12-06 16:40:32'),(12,'user12','user12 user13','user13','Indeed.',0,'2022-12-06 16:40:41'),(13,'user12','user12 user13','user13','I\'m going to log out now. Good luck',0,'2022-12-06 16:41:25'),(14,'user12','user12 user13','user12','Thank you.',0,'2022-12-06 16:41:34'),(15,'user12','user12 user13','user12','Thank you.',0,'2022-12-06 16:42:08'),(16,'user12','user1 user12','user12','test',0,'2022-12-17 19:09:16'),(17,'user12','user1 user12','user12','test2',0,'2022-12-17 19:11:38'),(18,'user12','user1 user12','user12','test3',0,'2022-12-17 19:12:04'),(19,'user12','user1 user12','user12','test4',0,'2022-12-17 19:13:29'),(20,'user12','user1 user12','user12','test5',0,'2022-12-17 19:13:47'),(21,'user12','user1 user12','user12','ervw',0,'2022-12-17 19:22:51'),(22,'user12','user1 user12','user12','ervw',0,'2022-12-17 19:24:11'),(23,'user12','user1 user12','user12','ervw',0,'2022-12-17 19:26:02'),(24,'user12','user1 user12','user12','ervw',0,'2022-12-17 19:27:40'),(25,'user12','user1 user12','user12','ervw',0,'2022-12-17 19:30:47'),(26,'user12','user1 user12','user12','faifnraeo',0,'2022-12-17 21:24:12'),(27,'user12','user12 user13','user12','wiaefna',0,'2022-12-17 22:54:04'),(28,'user12','user12 user13','user12','faofneo',0,'2022-12-17 22:54:39'),(29,'user12','user12 user13','user12','gaogna',0,'2022-12-17 23:01:49'),(30,'user12','user12 user13','user12','faaieoi',0,'2022-12-17 23:03:28'),(31,'user12','user12 user13','user13','googlymoogly',0,'2022-12-18 17:07:45'),(32,'user12','user12 user13','user13','googlymoogly',0,'2022-12-18 17:09:31'),(33,'user12','user12 user13','user13','faofeiaw',0,'2022-12-18 17:47:15'),(34,'user12','user12 user13','user13','naprdk',0,'2022-12-18 17:48:55'),(35,'user12','user12 user13','user13','fgnarf',0,'2022-12-18 17:51:43'),(36,'user12','user12 user13','user13','aupfdagnd',0,'2022-12-18 17:57:19'),(37,'user12','user12 user13','user13','iahfvrqi[',0,'2022-12-18 17:58:44'),(38,'user12','user12 user13','user13','dapfa[uer',0,'2022-12-18 19:12:37'),(39,'user12','user12 user13','user13','asserfnvaie[h',0,'2022-12-18 19:15:41'),(40,'user12','user12 user13','user12','thank you for sharing my excitement.',0,'2022-12-18 20:46:43'),(41,'user12','user12 user13','user12','a new one',0,'2022-12-18 21:23:32'),(42,'user12','user12 user13','user13','right back at you!',0,'2022-12-18 21:23:50'),(43,'user12','user12 user13','user13','I suppose this is basic stuff for other programmers',0,'2022-12-18 21:27:04'),(44,'user12','user12 user13','user12','I think it might be. it took forever to solve this.',0,'2022-12-18 21:27:43'),(45,'user12','user12 user13','user13','So I have it set at about a 15 second interval',0,'2022-12-18 21:28:06'),(46,'user12','user12 user13','user12','I assume it\'s processor intensive to keep pinging the server for updates every time.',0,'2022-12-18 21:28:50'),(47,'user12','user12 user13','user13','But let\'s see what happens if we delete the setTimeout()',0,'2022-12-18 21:29:52'),(48,'user12','user12 user13','user12','NO! just set it to a very low number, like 1000',0,'2022-12-18 21:30:30'),(49,'user12','user12 user13','user12','Does the cpu heat up? we could check the task manager',0,'2022-12-18 21:31:05'),(50,'user12','user12 user13','user13','ok',0,'2022-12-18 21:31:17'),(51,'user12','user12 user13','user13','just testing, while looking at the task manager. Right now, it\'s at CPU 4%. eDGE IS USING THE MOST MEMORY, but it\'s got hundreds of tabs open.',0,'2022-12-18 21:32:58'),(52,'user12','user12 user13','user13','sending message cpu 5%',0,'2022-12-18 21:33:09'),(53,'user12','user12 user13','user13','sending 4%',0,'2022-12-18 21:33:18'),(54,'user12','user12 user13','user13','ok, now I\'m going to look at both screens of the convo to see how quick the conversation speed is.',0,'2022-12-18 21:33:49'),(55,'user12','user12 user13','user13','it\'s this fast',0,'2022-12-18 21:34:01'),(56,'user12','user12 user13','user12','I think that\'s slow',0,'2022-12-18 21:34:23'),(57,'user12','user12 user13','user13','your message went FAST',0,'2022-12-18 21:34:37'),(58,'user12','user12 user13','user13','test',0,'2022-12-18 21:34:49'),(59,'user12','user12 user13','user13','test',0,'2022-12-18 21:34:58'),(60,'user12','user12 user13','user13','test2',0,'2022-12-18 21:35:03'),(61,'user12','user12 user13','user12','ok it\'s speedy.',0,'2022-12-18 21:35:14'),(62,'user12','user12 user13','user12','NICE',0,'2022-12-18 21:35:28'),(63,'user12','user12 user13','user13','NICE',0,'2022-12-18 21:35:31'),(64,'user12','user12 user13','user13','I have to set it up so that it focuses the cursor on the text field.',0,'2022-12-18 21:36:33'),(65,'user12','user12 user13','user12','... and you have to make it look nicer.',0,'2022-12-18 21:36:53'),(66,'user12','user12 user13','user13','yes',0,'2022-12-18 21:36:59'),(67,'user12','user12 user13','user13','setInterval()',0,'2022-12-18 21:54:40'),(68,'user12','user12 user13','user12','setInterval()',0,'2022-12-18 21:55:00'),(69,'user12','user12 user13','user13','test 4:56',0,'2022-12-18 21:56:08'),(70,'user12','user12 user13','user12','setInterval() does not work',0,'2022-12-18 21:56:48'),(71,'user12','user12 user13','user13','Yeah, setInterval() does not work!',0,'2022-12-18 21:57:43'),(72,'user12','user12 user13','user12','That\'s what she said!',0,'2022-12-18 21:57:59'),(73,'user12','user12 user13','user13','A recursive call to self() with a setTimeout() works better!',0,'2022-12-18 21:58:55'),(74,'user12','user12 user13','user12','That\'s what she said!!',0,'2022-12-18 21:59:10'),(75,'user12','user12 user13','user12','this is for testing a minor code cleanup.',0,'2022-12-18 22:14:37'),(76,'user12','user12 user13','user12','I cleaned up the JavaScript async/await stuff.',0,'2022-12-18 22:15:11'),(77,'user12','user12 user13','user13','It works.',0,'2022-12-18 22:15:22'),(78,'user12','user12 user13','user12','OK, I changed the interval to 3 sec how is it',0,'2022-12-18 22:16:22'),(79,'user12','user12 user13','user13','Not bad, I think',0,'2022-12-18 22:16:32'),(80,'user12','user12 user13','user12','yeah, Good enough',0,'2022-12-18 22:16:48'),(81,'user12','user12 user13','user13','how well does this work?',0,'2022-12-18 23:50:05'),(82,'user12','user12 user13','user12','a few seconds delay',0,'2022-12-18 23:50:17'),(83,'user12','user12 user13','user13','Here is the original',0,'2022-12-18 23:51:12'),(84,'user12','user12 user13','user12','test 6:55pm',0,'2022-12-18 23:56:50'),(85,'user12','user12 user13','user13','works. 6:57pm',0,'2022-12-18 23:57:35'),(86,'user12','user12 user13','user12','I totally forgot that each message is time-stamped.',0,'2022-12-18 23:58:10'),(87,'user12','user12 user13','user12','message at Alfred',0,'2022-12-19 01:22:12'),(88,'user12','user12 user13','user13','return mesage',0,'2022-12-19 01:22:34'),(89,'user12','user12 user13','user12','gobeldy goop!',0,'2022-12-22 18:23:44'),(90,'user12','user12 user13','user12','more gobeldy goop!',0,'2022-12-23 01:29:25'),(91,'user12','user12 user13','user12','test',0,'2022-12-23 01:35:45'),(92,'user12','user12 user13','user13','Here, I am testing use of XMLHttpRequest()',0,'2022-12-23 01:41:49'),(93,'user12','user12 user13','user12','It worked, but did not auto-update on recipient side.',0,'2022-12-23 01:42:31'),(94,'user12','user12 user13','user12','... so you have to make use of a setInterval() function.',0,'2022-12-23 01:47:16'),(95,'user12','user12 user13','user13','will it work though?',0,'2022-12-23 01:47:32'),(96,'user12','user12 user13','user13','Hmm.. guess not',0,'2022-12-23 01:48:40'),(97,'user12','user12 user13','user12','I dn\'t have it yet',0,'2022-12-23 01:48:54'),(98,'user12','user12 user13','user12','I don\'t know!!',0,'2022-12-23 01:53:12'),(99,'user12','user12 user13','user12','did it startChecking?',0,'2022-12-23 01:57:28'),(100,'user12','user12 user13','user13','maybe.',0,'2022-12-23 01:57:38'),(101,'user12','user12 user13','user12','testing',0,'2022-12-23 02:02:30'),(102,'user12','user12 user13','user13','new',0,'2022-12-23 02:03:26'),(103,'user12','user12 user13','user12','new new',0,'2022-12-23 02:04:12'),(104,'user12','user12 user13','user13','new new',0,'2022-12-23 02:04:24'),(105,'user12','user12 user13','user12','nothing',0,'2022-12-23 02:07:30'),(106,'user12','user12 user12, user13','user12','test2',0,'2022-12-23 02:09:11'),(107,'user12','user12 user13','user12','test2',0,'2022-12-23 02:09:23'),(108,'user12','user12 user13','user13','test2',0,'2022-12-23 02:09:34'),(109,'user12','user12 user13','user13','test test',0,'2022-12-23 02:09:45'),(110,'user12','user12 user13','user12','9:13',0,'2022-12-23 02:13:27'),(111,'user12','user12 user13','user13','913',0,'2022-12-23 02:13:41'),(112,'user12','user12 user13','user13','not working.',0,'2022-12-23 02:13:59'),(113,'user12','user12 user13','user13','why not?',0,'2022-12-23 02:19:05'),(114,'user12','user12 user13','user12','callback',0,'2022-12-23 02:27:38'),(115,'user12','user12 user13','user12','callback2',0,'2022-12-23 02:28:00'),(116,'user12','user12 user13','user13','callback3',0,'2022-12-23 02:28:34'),(117,'user12','user12 user13','user12','test',0,'2022-12-23 02:29:55'),(118,'user12','user12 user13','user12','test2',0,'2022-12-23 02:30:02'),(119,'user12','user12 user13','user13','test3',0,'2022-12-23 02:30:13'),(120,'user12','user12 user13','user13','test4',0,'2022-12-23 02:30:19'),(121,'user12','user12 user13','user13','test5',0,'2022-12-23 02:30:56'),(122,'user12','user12 user13','user13','test6',0,'2022-12-23 02:31:02'),(123,'user12','user12 user13','user12','test7',0,'2022-12-23 02:31:10'),(124,'user12','user12 user13','user13','try this:',0,'2022-12-23 02:32:40'),(125,'user12','user12 user13','user12','this wont work, will it.',0,'2022-12-23 02:33:33'),(126,'user12','user12 user13','user13','nope.',0,'2022-12-23 02:33:39'),(127,'user12','user12 user13','user12','and now?',0,'2022-12-23 02:34:15'),(128,'user12','user12 user13','user13','Yes.',0,'2022-12-23 02:34:20'),(129,'user12','user12 user13','user13','I\'ver reduced the frequency',0,'2022-12-23 02:37:54'),(130,'user12','user12 user13','user12','Iv\'e switched back to the fetch API',0,'2022-12-23 02:38:43'),(131,'user12','user12 user13','user13','I think that\'s better!',0,'2022-12-23 02:38:57'),(132,'user12','user12 user13','user12','The computer fan is not going crazy anymore!',0,'2022-12-23 02:39:27'),(133,'user12','user12 user13','user13','Yeah, Something about XMLHttpRequest() was driving it crazy.',0,'2022-12-23 02:40:01'),(134,'user12','user12 user13','user12','Here is one message with the new XHR_get_message() callL',0,'2022-12-23 16:17:37'),(135,'user12','user12 user13','user13','I think this works better than last time.',0,'2022-12-23 16:17:53'),(136,'user12','user12 user13','user12','but it\'s not as fast as the recursive async await, right?',0,'2022-12-23 16:18:33'),(137,'user12','user12 user13','user13','I think so',0,'2022-12-23 16:19:41'),(138,'user12','user12 user13','user12','hard to measure.',0,'2022-12-23 16:19:52'),(139,'user12','user12 user13','user13','ok, let\'s switch to the async await and see',0,'2022-12-23 16:20:20'),(140,'user12','user12 user13','user13','... This is working flawlessly though..',0,'2022-12-23 16:20:48'),(141,'user12','user12 user13','user12','yes it is. Hang on. I\'ll switch it out.',0,'2022-12-23 16:21:17'),(142,'user12','user12 user13','user12','ok, done. respond to get it going.',0,'2022-12-23 16:22:04'),(143,'user12','user12 user13','user13','It should be going now',0,'2022-12-23 16:22:16'),(144,'user12','user12 user13','user12','Yes, perceptually a tiny bit faster.',0,'2022-12-23 16:22:36'),(145,'user12','user12 user13','user13','it is, I think. Just that little bit.',0,'2022-12-23 16:22:52'),(146,'user12','user12 user13','user12','and sonetimes slow',0,'2022-12-23 16:23:02'),(147,'user12','user12 user13','user13','hard to say which is better.',0,'2022-12-23 16:23:17'),(148,'user12','user12 user13','user12','One difference between the two functions is that the XHR is checking the ready state and the status to make sure it\'s 4 && 200.',0,'2022-12-23 16:24:54'),(149,'user12','user12 user13','user13','Yes, we have to change that.',0,'2022-12-23 16:25:25'),(150,'user12','user12 user13','user12','added if statement to async/await call',0,'2022-12-23 22:32:11'),(151,'user12','user12 user13','user13','Everything is coming up Millhouse.',0,'2022-12-23 22:32:26'),(152,'user12','user12 user13','user12','That\'s what I like to hear.',0,'2022-12-23 22:32:44'),(153,'user12','user12 user13','user12','last one',0,'2022-12-23 22:40:26'),(154,'user12','user12 user13','user13','done.',0,'2022-12-23 22:40:32'),(155,'user12','user12 user13','user12','K. commit changes and merge now.',0,'2022-12-23 22:40:53'),(156,'user12','user12 user13','user13','small change',0,'2022-12-23 22:43:48'),(157,'user12','user12 user13','user12','K',0,'2022-12-23 22:43:55'),(158,'user12','user12 user13','user13','test',0,'2022-12-23 23:52:13'),(159,'user12','user12 user13','user12','test',0,'2022-12-23 23:52:18'),(160,'user12','user12 user13','user13','test',0,'2022-12-23 23:57:02'),(161,'user12','user12 user13','user12','not working',0,'2022-12-23 23:57:42'),(162,'user12','user12 user13','user13','test',0,'2022-12-24 00:02:53'),(163,'user12','user12 user13','user13','test',0,'2022-12-24 00:41:39'),(164,'user12','user12 user13','user12','test',0,'2022-12-24 00:43:22'),(165,'user12','user12 user13','user12','test',0,'2022-12-24 00:43:48'),(166,'user12','user12 user13','user12','test',0,'2022-12-24 00:44:39'),(167,'user12','user12 user13','user13','TEST',0,'2022-12-24 00:50:26'),(168,'user12','user12 user13','user13','So it\'s working now?',0,'2022-12-24 01:40:12'),(169,'user12','user12 user13','user12','I guess so!',0,'2022-12-24 01:40:22'),(170,'user12','user12 user13','user13','is it still working?',0,'2022-12-24 01:43:40'),(171,'user12','user12 user13','user12','I guess so!',0,'2022-12-24 01:43:48'),(172,'user12','user12 user13','user12','how about now?',0,'2022-12-24 01:47:23'),(173,'user12','user12 user13','user13','Yes.',0,'2022-12-24 01:47:29'),(174,'user12','user12 user13','user13','I think I like what\'s happening.',0,'2022-12-24 01:50:07'),(175,'user12','user12 user13','user12','Yes, everything is coming up Millhouse. HaHa.',0,'2022-12-24 01:50:27'),(176,'user12','user12 user13','user13','Millie vanilli',0,'2022-12-24 01:50:43'),(177,'user12','user12 user13','user12','OK. Time for the Git merge, and uploading to GitHub. Maybe we should just keep it top-down.',0,'2022-12-24 01:52:48'),(178,'user12','user12 user13','user13','Yes, Maybe. Why am I saying \"we\"? ...',0,'2022-12-24 01:53:37'),(179,'user12','user12 user13','user13','Anyway, I can prioritize making the layout more reactive first, then bottom-up later.',0,'2022-12-24 01:54:27'),(180,'user12','user12 user13','user12','it works, still.',0,'2022-12-24 03:32:57'),(181,'user12','user12 user13','user12','verifying...',0,'2022-12-24 16:22:21'),(182,'user12','user12 user13','user13','verified...',0,'2022-12-24 16:22:34'),(183,'user12','user12 user13','user12','the app\'s been updated with new filenames, and the app is called messaging_app220120',0,'2022-12-24 19:27:12'),(184,'user12','user12 user13','user12','The tool, create_dum_restore.php was really useful.',0,'2022-12-24 19:27:54'),(185,'user12','user12 user13','user12','create_dump_restore.php',0,'2022-12-24 19:28:09');
+/*!40000 ALTER TABLE `user12` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user13`
+--
+
+DROP TABLE IF EXISTS `user13`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user13` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `participants` varchar(255) NOT NULL,
+  `speaker` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `viewed` tinyint(1) unsigned NOT NULL,
+  `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user13`
+--
+
+LOCK TABLES `user13` WRITE;
+/*!40000 ALTER TABLE `user13` DISABLE KEYS */;
+INSERT INTO `user13` VALUES (1,'user13','user12 user13','user12','first message: user12 to user13',0,'2022-12-06 16:13:01'),(2,'user13','user12 user13','user13','message received from user12 ',0,'2022-12-06 16:13:39'),(3,'user13','user12 user13','user12','He probably sees you like an older brother especialy if he\'s friends with your brother',0,'2022-12-06 16:17:01'),(4,'user13','user12 user13','user13','Litterally came here to say this kid probably thinks your\'re cook as hell. Probably looking at your like a sugo big brother.',0,'2022-12-06 16:17:50'),(5,'user13','user12 user13','user12','This, and try to include your brother aswell so...',0,'2022-12-06 16:18:18'),(6,'user13','user12 user13','user13','This! yes and please just be there for him. I know when I was a child I needed someone like you that i felt comfortable iwth taking too about things going on arougn me.',0,'2022-12-06 16:19:00'),(7,'user13','user12 user13','user12','This was all copied from a reddit post. Thanks for participating in this forgery.',0,'2022-12-06 16:39:07'),(8,'user13','user12 user13','user13','Your welcome. It was fun copying stereotypical posts from reddit. ',0,'2022-12-06 16:39:43'),(9,'user13','user12 user13','user12','If only we could do something about that box sizing, eh?',0,'2022-12-06 16:40:06'),(10,'user13','user12 user13','user13','Yes, and the conversation button, eh?',0,'2022-12-06 16:40:25'),(11,'user13','user12 user13','user12','Right.',0,'2022-12-06 16:40:32'),(12,'user13','user12 user13','user13','Indeed.',0,'2022-12-06 16:40:41'),(13,'user13','user12 user13','user13','I\'m going to log out now. Good luck',0,'2022-12-06 16:41:25'),(14,'user13','user12 user13','user12','Thank you.',0,'2022-12-06 16:41:34'),(15,'user13','user12 user13','user12','Thank you.',0,'2022-12-06 16:42:08'),(16,'user13','user12 user13','user12','wiaefna',0,'2022-12-17 22:54:04'),(17,'user13','user12 user13','user12','faofneo',0,'2022-12-17 22:54:39'),(18,'user13','user12 user13','user12','gaogna',0,'2022-12-17 23:01:49'),(19,'user13','user12 user13','user12','faaieoi',0,'2022-12-17 23:03:28'),(20,'user13','user12 user13','user13','googlymoogly',0,'2022-12-18 17:07:45'),(21,'user13','user12 user13','user13','googlymoogly',0,'2022-12-18 17:09:31'),(22,'user13','user12 user13','user13','faofeiaw',0,'2022-12-18 17:47:15'),(23,'user13','user12 user13','user13','naprdk',0,'2022-12-18 17:48:55'),(24,'user13','user12 user13','user13','fgnarf',0,'2022-12-18 17:51:43'),(25,'user13','user12 user13','user13','aupfdagnd',0,'2022-12-18 17:57:19'),(26,'user13','user12 user13','user13','iahfvrqi[',0,'2022-12-18 17:58:44'),(27,'user13','user12 user13','user13','dapfa[uer',0,'2022-12-18 19:12:37'),(28,'user13','user12 user13','user13','asserfnvaie[h',0,'2022-12-18 19:15:41'),(29,'user13','user12 user13','user12','thank you for sharing my excitement.',0,'2022-12-18 20:46:43'),(30,'user13','user12 user13','user12','a new one',0,'2022-12-18 21:23:32'),(31,'user13','user12 user13','user13','right back at you!',0,'2022-12-18 21:23:50'),(32,'user13','user12 user13','user13','I suppose this is basic stuff for other programmers',0,'2022-12-18 21:27:04'),(33,'user13','user12 user13','user12','I think it might be. it took forever to solve this.',0,'2022-12-18 21:27:43'),(34,'user13','user12 user13','user13','So I have it set at about a 15 second interval',0,'2022-12-18 21:28:06'),(35,'user13','user12 user13','user12','I assume it\'s processor intensive to keep pinging the server for updates every time.',0,'2022-12-18 21:28:50'),(36,'user13','user12 user13','user13','But let\'s see what happens if we delete the setTimeout()',0,'2022-12-18 21:29:52'),(37,'user13','user12 user13','user12','NO! just set it to a very low number, like 1000',0,'2022-12-18 21:30:30'),(38,'user13','user12 user13','user12','Does the cpu heat up? we could check the task manager',0,'2022-12-18 21:31:05'),(39,'user13','user12 user13','user13','ok',0,'2022-12-18 21:31:17'),(40,'user13','user12 user13','user13','just testing, while looking at the task manager. Right now, it\'s at CPU 4%. eDGE IS USING THE MOST MEMORY, but it\'s got hundreds of tabs open.',0,'2022-12-18 21:32:58'),(41,'user13','user12 user13','user13','sending message cpu 5%',0,'2022-12-18 21:33:09'),(42,'user13','user12 user13','user13','sending 4%',0,'2022-12-18 21:33:18'),(43,'user13','user12 user13','user13','ok, now I\'m going to look at both screens of the convo to see how quick the conversation speed is.',0,'2022-12-18 21:33:49'),(44,'user13','user12 user13','user13','it\'s this fast',0,'2022-12-18 21:34:01'),(45,'user13','user12 user13','user12','I think that\'s slow',0,'2022-12-18 21:34:23'),(46,'user13','user12 user13','user13','your message went FAST',0,'2022-12-18 21:34:37'),(47,'user13','user12 user13','user13','test',0,'2022-12-18 21:34:49'),(48,'user13','user12 user13','user13','test',0,'2022-12-18 21:34:58'),(49,'user13','user12 user13','user13','test2',0,'2022-12-18 21:35:03'),(50,'user13','user12 user13','user12','ok it\'s speedy.',0,'2022-12-18 21:35:14'),(51,'user13','user12 user13','user12','NICE',0,'2022-12-18 21:35:28'),(52,'user13','user12 user13','user13','NICE',0,'2022-12-18 21:35:31'),(53,'user13','user12 user13','user13','I have to set it up so that it focuses the cursor on the text field.',0,'2022-12-18 21:36:33'),(54,'user13','user12 user13','user12','... and you have to make it look nicer.',0,'2022-12-18 21:36:53'),(55,'user13','user12 user13','user13','yes',0,'2022-12-18 21:36:59'),(56,'user13','user12 user13','user13','setInterval()',0,'2022-12-18 21:54:40'),(57,'user13','user12 user13','user12','setInterval()',0,'2022-12-18 21:55:00'),(58,'user13','user12 user13','user13','test 4:56',0,'2022-12-18 21:56:08'),(59,'user13','user12 user13','user12','setInterval() does not work',0,'2022-12-18 21:56:48'),(60,'user13','user12 user13','user13','Yeah, setInterval() does not work!',0,'2022-12-18 21:57:43'),(61,'user13','user12 user13','user12','That\'s what she said!',0,'2022-12-18 21:57:59'),(62,'user13','user12 user13','user13','A recursive call to self() with a setTimeout() works better!',0,'2022-12-18 21:58:55'),(63,'user13','user12 user13','user12','That\'s what she said!!',0,'2022-12-18 21:59:10'),(64,'user13','user12 user13','user12','this is for testing a minor code cleanup.',0,'2022-12-18 22:14:37'),(65,'user13','user12 user13','user12','I cleaned up the JavaScript async/await stuff.',0,'2022-12-18 22:15:11'),(66,'user13','user12 user13','user13','It works.',0,'2022-12-18 22:15:22'),(67,'user13','user12 user13','user12','OK, I changed the interval to 3 sec how is it',0,'2022-12-18 22:16:22'),(68,'user13','user12 user13','user13','Not bad, I think',0,'2022-12-18 22:16:32'),(69,'user13','user12 user13','user12','yeah, Good enough',0,'2022-12-18 22:16:48'),(70,'user13','user12 user13','user13','how well does this work?',0,'2022-12-18 23:50:05'),(71,'user13','user12 user13','user12','a few seconds delay',0,'2022-12-18 23:50:17'),(72,'user13','user12 user13','user13','Here is the original',0,'2022-12-18 23:51:12'),(73,'user13','user12 user13','user12','test 6:55pm',0,'2022-12-18 23:56:50'),(74,'user13','user12 user13','user13','works. 6:57pm',0,'2022-12-18 23:57:35'),(75,'user13','user12 user13','user12','I totally forgot that each message is time-stamped.',0,'2022-12-18 23:58:10'),(76,'user13','user12 user13','user12','message at Alfred',0,'2022-12-19 01:22:12'),(77,'user13','user12 user13','user13','return mesage',0,'2022-12-19 01:22:34'),(78,'user13','user12 user13','user12','gobeldy goop!',0,'2022-12-22 18:23:44'),(79,'user13','user12 user13','user12','more gobeldy goop!',0,'2022-12-23 01:29:25'),(80,'user13','user12 user13','user12','test',0,'2022-12-23 01:35:45'),(81,'user13','user12 user13','user13','Here, I am testing use of XMLHttpRequest()',0,'2022-12-23 01:41:49'),(82,'user13','user12 user13','user12','It worked, but did not auto-update on recipient side.',0,'2022-12-23 01:42:31'),(83,'user13','user12 user13','user12','... so you have to make use of a setInterval() function.',0,'2022-12-23 01:47:16'),(84,'user13','user12 user13','user13','will it work though?',0,'2022-12-23 01:47:32'),(85,'user13','user12 user13','user13','Hmm.. guess not',0,'2022-12-23 01:48:40'),(86,'user13','user12 user13','user12','I dn\'t have it yet',0,'2022-12-23 01:48:54'),(87,'user13','user12 user13','user12','I don\'t know!!',0,'2022-12-23 01:53:12'),(88,'user13','user12 user13','user12','did it startChecking?',0,'2022-12-23 01:57:28'),(89,'user13','user12 user13','user13','maybe.',0,'2022-12-23 01:57:38'),(90,'user13','user12 user13','user12','testing',0,'2022-12-23 02:02:30'),(91,'user13','user12 user13','user13','new',0,'2022-12-23 02:03:26'),(92,'user13','user12 user13','user12','new new',0,'2022-12-23 02:04:12'),(93,'user13','user12 user13','user13','new new',0,'2022-12-23 02:04:24'),(94,'user13','user12 user13','user12','nothing',0,'2022-12-23 02:07:30'),(95,'user13','user12 user12, user13','user12','test2',0,'2022-12-23 02:09:11'),(96,'user13','user12 user13','user12','test2',0,'2022-12-23 02:09:23'),(97,'user13','user12 user13','user13','test2',0,'2022-12-23 02:09:34'),(98,'user13','user12 user13','user13','test test',0,'2022-12-23 02:09:45'),(99,'user13','user12 user13','user12','9:13',0,'2022-12-23 02:13:27'),(100,'user13','user12 user13','user13','913',0,'2022-12-23 02:13:41'),(101,'user13','user12 user13','user13','not working.',0,'2022-12-23 02:13:59'),(102,'user13','user12 user13','user13','why not?',0,'2022-12-23 02:19:05'),(103,'user13','user12 user13','user12','callback',0,'2022-12-23 02:27:38'),(104,'user13','user12 user13','user12','callback2',0,'2022-12-23 02:28:00'),(105,'user13','user12 user13','user13','callback3',0,'2022-12-23 02:28:34'),(106,'user13','user12 user13','user12','test',0,'2022-12-23 02:29:55'),(107,'user13','user12 user13','user12','test2',0,'2022-12-23 02:30:02'),(108,'user13','user12 user13','user13','test3',0,'2022-12-23 02:30:13'),(109,'user13','user12 user13','user13','test4',0,'2022-12-23 02:30:19'),(110,'user13','user12 user13','user13','test5',0,'2022-12-23 02:30:56'),(111,'user13','user12 user13','user13','test6',0,'2022-12-23 02:31:02'),(112,'user13','user12 user13','user12','test7',0,'2022-12-23 02:31:10'),(113,'user13','user12 user13','user13','try this:',0,'2022-12-23 02:32:40'),(114,'user13','user12 user13','user12','this wont work, will it.',0,'2022-12-23 02:33:33'),(115,'user13','user12 user13','user13','nope.',0,'2022-12-23 02:33:39'),(116,'user13','user12 user13','user12','and now?',0,'2022-12-23 02:34:15'),(117,'user13','user12 user13','user13','Yes.',0,'2022-12-23 02:34:20'),(118,'user13','user12 user13','user13','I\'ver reduced the frequency',0,'2022-12-23 02:37:54'),(119,'user13','user12 user13','user12','Iv\'e switched back to the fetch API',0,'2022-12-23 02:38:43'),(120,'user13','user12 user13','user13','I think that\'s better!',0,'2022-12-23 02:38:57'),(121,'user13','user12 user13','user12','The computer fan is not going crazy anymore!',0,'2022-12-23 02:39:27'),(122,'user13','user12 user13','user13','Yeah, Something about XMLHttpRequest() was driving it crazy.',0,'2022-12-23 02:40:01'),(123,'user13','user12 user13','user12','Here is one message with the new XHR_get_message() callL',0,'2022-12-23 16:17:37'),(124,'user13','user12 user13','user13','I think this works better than last time.',0,'2022-12-23 16:17:53'),(125,'user13','user12 user13','user12','but it\'s not as fast as the recursive async await, right?',0,'2022-12-23 16:18:33'),(126,'user13','user12 user13','user13','I think so',0,'2022-12-23 16:19:41'),(127,'user13','user12 user13','user12','hard to measure.',0,'2022-12-23 16:19:52'),(128,'user13','user12 user13','user13','ok, let\'s switch to the async await and see',0,'2022-12-23 16:20:21'),(129,'user13','user12 user13','user13','... This is working flawlessly though..',0,'2022-12-23 16:20:48'),(130,'user13','user12 user13','user12','yes it is. Hang on. I\'ll switch it out.',0,'2022-12-23 16:21:17'),(131,'user13','user12 user13','user12','ok, done. respond to get it going.',0,'2022-12-23 16:22:04'),(132,'user13','user12 user13','user13','It should be going now',0,'2022-12-23 16:22:16'),(133,'user13','user12 user13','user12','Yes, perceptually a tiny bit faster.',0,'2022-12-23 16:22:36'),(134,'user13','user12 user13','user13','it is, I think. Just that little bit.',0,'2022-12-23 16:22:52'),(135,'user13','user12 user13','user12','and sonetimes slow',0,'2022-12-23 16:23:02'),(136,'user13','user12 user13','user13','hard to say which is better.',0,'2022-12-23 16:23:17'),(137,'user13','user12 user13','user12','One difference between the two functions is that the XHR is checking the ready state and the status to make sure it\'s 4 && 200.',0,'2022-12-23 16:24:54'),(138,'user13','user12 user13','user13','Yes, we have to change that.',0,'2022-12-23 16:25:25'),(139,'user13','user12 user13','user12','added if statement to async/await call',0,'2022-12-23 22:32:11'),(140,'user13','user12 user13','user13','Everything is coming up Millhouse.',0,'2022-12-23 22:32:26'),(141,'user13','user12 user13','user12','That\'s what I like to hear.',0,'2022-12-23 22:32:44'),(142,'user13','user12 user13','user12','last one',0,'2022-12-23 22:40:27'),(143,'user13','user12 user13','user13','done.',0,'2022-12-23 22:40:32'),(144,'user13','user12 user13','user12','K. commit changes and merge now.',0,'2022-12-23 22:40:53'),(145,'user13','user12 user13','user13','small change',0,'2022-12-23 22:43:48'),(146,'user13','user12 user13','user12','K',0,'2022-12-23 22:43:55'),(147,'user13','user12 user13','user13','test',0,'2022-12-23 23:52:14'),(148,'user13','user12 user13','user12','test',0,'2022-12-23 23:52:19'),(149,'user13','user12 user13','user13','test',0,'2022-12-23 23:57:02'),(150,'user13','user12 user13','user12','not working',0,'2022-12-23 23:57:42'),(151,'user13','user12 user13','user13','test',0,'2022-12-24 00:02:53'),(152,'user13','user12 user13','user13','test',0,'2022-12-24 00:41:39'),(153,'user13','user12 user13','user12','test',0,'2022-12-24 00:43:22'),(154,'user13','user12 user13','user12','test',0,'2022-12-24 00:43:48'),(155,'user13','user12 user13','user12','test',0,'2022-12-24 00:44:39'),(156,'user13','user12 user13','user13','TEST',0,'2022-12-24 00:50:26'),(157,'user13','user12 user13','user13','So it\'s working now?',0,'2022-12-24 01:40:12'),(158,'user13','user12 user13','user12','I guess so!',0,'2022-12-24 01:40:22'),(159,'user13','user12 user13','user13','is it still working?',0,'2022-12-24 01:43:40'),(160,'user13','user12 user13','user12','I guess so!',0,'2022-12-24 01:43:48'),(161,'user13','user12 user13','user12','how about now?',0,'2022-12-24 01:47:23'),(162,'user13','user12 user13','user13','Yes.',0,'2022-12-24 01:47:29'),(163,'user13','user12 user13','user13','I think I like what\'s happening.',0,'2022-12-24 01:50:07'),(164,'user13','user12 user13','user12','Yes, everything is coming up Millhouse. HaHa.',0,'2022-12-24 01:50:27'),(165,'user13','user12 user13','user13','Millie vanilli',0,'2022-12-24 01:50:43'),(166,'user13','user12 user13','user12','OK. Time for the Git merge, and uploading to GitHub. Maybe we should just keep it top-down.',0,'2022-12-24 01:52:48'),(167,'user13','user12 user13','user13','Yes, Maybe. Why am I saying \"we\"? ...',0,'2022-12-24 01:53:37'),(168,'user13','user12 user13','user13','Anyway, I can prioritize making the layout more reactive first, then bottom-up later.',0,'2022-12-24 01:54:27'),(169,'user13','user12 user13','user12','it works, still.',0,'2022-12-24 03:32:57'),(170,'user13','user12 user13','user12','verifying...',0,'2022-12-24 16:22:21'),(171,'user13','user12 user13','user13','verified...',0,'2022-12-24 16:22:34'),(172,'user13','user12 user13','user12','the app\'s been updated with new filenames, and the app is called messaging_app220120',0,'2022-12-24 19:27:12'),(173,'user13','user12 user13','user12','The tool, create_dum_restore.php was really useful.',0,'2022-12-24 19:27:54'),(174,'user13','user12 user13','user12','create_dump_restore.php',0,'2022-12-24 19:28:09');
+/*!40000 ALTER TABLE `user13` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -348,7 +406,7 @@ CREATE TABLE `user2` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +415,7 @@ CREATE TABLE `user2` (
 
 LOCK TABLES `user2` WRITE;
 /*!40000 ALTER TABLE `user2` DISABLE KEYS */;
-INSERT INTO `user2` VALUES (1,'user2','user3 user4 user5 user6 user7 user8 user9 user10 user11 user1 user2 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user2` VALUES (1,'user2','user3 user4 user5 user6 user7 user8 user9 user10 user11 user1 user2 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user2','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user2','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user2` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +435,7 @@ CREATE TABLE `user3` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +444,7 @@ CREATE TABLE `user3` (
 
 LOCK TABLES `user3` WRITE;
 /*!40000 ALTER TABLE `user3` DISABLE KEYS */;
-INSERT INTO `user3` VALUES (1,'user3','user4 user5 user6 user7 user8 user9 user10 user11 user1 user2 user3 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user3` VALUES (1,'user3','user4 user5 user6 user7 user8 user9 user10 user11 user1 user2 user3 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user3','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user3','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user3` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -406,7 +464,7 @@ CREATE TABLE `user4` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +473,7 @@ CREATE TABLE `user4` (
 
 LOCK TABLES `user4` WRITE;
 /*!40000 ALTER TABLE `user4` DISABLE KEYS */;
-INSERT INTO `user4` VALUES (1,'user4','user5 user6 user7 user8 user9 user10 user11 user1 user2 user3 user4 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user4` VALUES (1,'user4','user5 user6 user7 user8 user9 user10 user11 user1 user2 user3 user4 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user4','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user4','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user4` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,7 +493,7 @@ CREATE TABLE `user5` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,7 +502,7 @@ CREATE TABLE `user5` (
 
 LOCK TABLES `user5` WRITE;
 /*!40000 ALTER TABLE `user5` DISABLE KEYS */;
-INSERT INTO `user5` VALUES (1,'user5','user6 user7 user8 user9 user10 user11 user1 user2 user3 user4 user5 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user5` VALUES (1,'user5','user6 user7 user8 user9 user10 user11 user1 user2 user3 user4 user5 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user5','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user5','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user5` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,7 +522,7 @@ CREATE TABLE `user6` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +531,7 @@ CREATE TABLE `user6` (
 
 LOCK TABLES `user6` WRITE;
 /*!40000 ALTER TABLE `user6` DISABLE KEYS */;
-INSERT INTO `user6` VALUES (1,'user6','user7 user8 user9 user10 user11 user1 user2 user3 user4 user5 user6 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user6` VALUES (1,'user6','user7 user8 user9 user10 user11 user1 user2 user3 user4 user5 user6 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user6','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user6','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user6` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,7 +551,7 @@ CREATE TABLE `user7` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -502,7 +560,7 @@ CREATE TABLE `user7` (
 
 LOCK TABLES `user7` WRITE;
 /*!40000 ALTER TABLE `user7` DISABLE KEYS */;
-INSERT INTO `user7` VALUES (1,'user7','user8 user9 user10 user11 user1 user2 user3 user4 user5 user6 user7 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user7` VALUES (1,'user7','user8 user9 user10 user11 user1 user2 user3 user4 user5 user6 user7 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user7','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user7','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user7` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -522,7 +580,7 @@ CREATE TABLE `user8` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -531,7 +589,7 @@ CREATE TABLE `user8` (
 
 LOCK TABLES `user8` WRITE;
 /*!40000 ALTER TABLE `user8` DISABLE KEYS */;
-INSERT INTO `user8` VALUES (1,'user8','user9 user10 user11 user1 user2 user3 user4 user5 user6 user7 user8 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user8` VALUES (1,'user8','user9 user10 user11 user1 user2 user3 user4 user5 user6 user7 user8 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user8','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user8','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user8` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,7 +609,7 @@ CREATE TABLE `user9` (
   `viewed` tinyint(1) unsigned NOT NULL,
   `date_entered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -560,7 +618,7 @@ CREATE TABLE `user9` (
 
 LOCK TABLES `user9` WRITE;
 /*!40000 ALTER TABLE `user9` DISABLE KEYS */;
-INSERT INTO `user9` VALUES (1,'user9','user10 user11 user1 user2 user3 user4 user5 user6 user7 user8 user9 user1','user1','first message, self included',0,'2022-02-11 12:49:54');
+INSERT INTO `user9` VALUES (1,'user9','user10 user11 user1 user2 user3 user4 user5 user6 user7 user8 user9 user1','user1','first message, self included',0,'2022-02-11 12:49:54'),(2,'user9','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user4','test',0,'2022-12-06 15:20:34'),(3,'user9','user1 user2 user3 user4 user5 user6 user7 user8 user9 user10 user11','user1','another test',0,'2022-12-06 15:58:01');
 /*!40000 ALTER TABLE `user9` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -573,4 +631,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-04 18:15:25
+-- Dump completed on 2022-12-24 15:26:47
