@@ -1,4 +1,4 @@
-<?php // chat_app220120 register_user.php
+<?php // messaging_app220120 register_user.php
 /**
  * This app 
  * 1) registers a user.
@@ -11,7 +11,7 @@
 include('functions/functions_login_registration.php');
 
 //define constant
-define('TITLE', 'Register: chat_app220120');
+define('TITLE', 'Register: messaging_app220120');
 // include header
 include('templates/header.html');
 
@@ -173,7 +173,7 @@ function form_register_display(
                 }
                 
                 // create welcome page/message with message that an email has been sent. login will be on that page. SESSION will start at that time. 
-                mail($email, 'chat_app220120 verification', 'Thank you for registering!');
+                mail($email, 'messaging_app220120 verification', 'Thank you for registering!');
                 print '<p>Welcome ' . $username . '! <br>An email has been sent to ' . $email . '</p>';
 
                 

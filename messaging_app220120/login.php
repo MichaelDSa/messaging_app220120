@@ -1,7 +1,7 @@
 
 
 <?php
-define('TITLE', 'Login: chat_app220120');
+define('TITLE', 'Login: messaging_app220120');
 include('templates/header.html');
 include('functions/functions_login_registration.php');
 

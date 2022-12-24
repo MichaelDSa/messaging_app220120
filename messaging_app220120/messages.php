@@ -1,5 +1,5 @@
 <?php
-define('TITLE', 'send/recieve: chat_app220120');
+define('TITLE', 'send/receive: messaging_app220120');
 include('templates/header.html');
 include('functions/functions_login_registration.php');
 include('functions/functions_messages.php');
@@ -41,7 +41,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 <!--  AJAX for updating conversation: -->
                 <script> 
 
-                let url = "http://localhost/chat_app220120/ajax_messages_display_conversation.php";
+                let url = "http://localhost/messaging_app220120/ajax_messages_display_conversation.php";
                 let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").innerHTML;       
                 
                 

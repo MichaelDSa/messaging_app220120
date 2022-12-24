@@ -25,7 +25,7 @@ print "
 $username = "root";
 $password = "root";
 $hostname = "localhost";
-$database = "chat_app220120";
+$database = "messaging_app220120";
 $charset = 'utf8';
 
 // PATH AND FILENAME CRITERIA:
