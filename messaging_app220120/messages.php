@@ -24,28 +24,45 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
     <div class="container">
         <div class="control" style="margin: 0 auto; width: 600px">
             <div class="box">
+            <div id="conversation"></div>
                 <div class="level">
                     <div class="level-item">
-                        <form action="messages.php" method="post">
+                        <form id="message_form" action="messages.php" method="post">
                             <div class="field has-addons">
                                 <p id="JS_sticky_recipients" hidden>'. $sticky_recipients . '</p>
                                 <p class="control"><input class="input is-info" type="text" name="recipients" placeholder="Add Recipients..." value="' . $sticky_recipients . '"></p>
-                                <p class="control"><input class="input is-info" type="text" name="message" placeholder="Add Your Message..." value="' . $sticky_message . '"></p>
+                                <p class="control"><input class="input is-info" type="text" name="message" placeholder="Add Your Message..." value="' . $sticky_message . '" autofocus></p>
                                 <p class="control"><input class="button has-background-link has-text-white" type="submit" value="Send"></p> 
                             </div>
                         </form>
+                        <script>document.getElementById("message_form").scrollIntoView();</script>
                     </div>
                 </div>
-                <div id="conversation">
 
                 <!--  AJAX for updating conversation: -->
                 <script> 
+                
 
                 let url = "http://localhost/messaging_app220120/ajax_messages_display_conversation.php";
                 let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").innerHTML;       
+
+                //scrolling vars and function. stops ajax from updating while scrolling.
+                let body = document.querySelector("body#body");
+                let is_scrolling = 0;
+                body.onscroll = (event) => {
+                    is_scrolling = 1;
+                    setTimeout(() => {
+                        is_scrolling = 0;
+                    }, 20000);
+                };
                 
+
                 
                 // async function
+                get_conversation(url);
+                
+
+                
                 async function get_conversation(url) {
                     
                     // fetch response from the url. Send the recipient variables through headers.
@@ -57,25 +74,33 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                     
                     // check if the response was successful.
                     if(response.ok && response.status == 200){
-                            
+                        
                         // convert the response to text
                         let conversation = await response.text();
                         
                         // replace the inner html of div with id="conversation"
                         document.getElementById("conversation").innerHTML = conversation;
+                        if(!is_scrolling){
+                            document.getElementById("message_form").scrollIntoView();
+                        }
+                        
                         
                         // call get_conversation to make recursive loop at a delay of x seconds.
                         setTimeout(() => get_conversation(url), 3000);
                     } else {
                         document.getElementById("conversation").innerHTML = "response not ok";
+                        // document.getElementById("message_form").scrollIntoView();
                     }
                 }
 
-                get_conversation(url);
+                function while_scroll(id = "message_form"){
+                    return id;
+                }
+                
 
                 //////////////////////////////////////////////////////////////////////////////////
 
-                //This is a XMLHttpRequest() version of the above code. It also works, but has a slightly different feel in the timing.
+                //This is a XMLHttpRequest() version of the above code. It also works, but will need updating to be usable.
                 // XHR_get_conversation(url);
                 // setInterval(() => XHR_get_conversation(url), 3000);
                 
@@ -98,7 +123,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
 
                 
                 </script>
-                </div>
+                
     ';
 
 }

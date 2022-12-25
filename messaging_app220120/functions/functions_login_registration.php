@@ -373,7 +373,7 @@ function messages_display_conversation($recipients){
     //now obtain data from mysql
     $username = mysqli_real_escape_string($dbc_first, $username);
     $participants = mysqli_real_escape_string($dbc_first, $participants);
-    $query = "SELECT * FROM `$username` WHERE participants='$participants' ORDER BY date_entered DESC";
+    $query = "SELECT * FROM `$username` WHERE participants='$participants' ORDER BY date_entered ASC";
     $query_result = mysqli_query($dbc_first, $query);
 
     while($row = mysqli_fetch_array($query_result)){
