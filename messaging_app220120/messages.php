@@ -8,6 +8,7 @@ session_user_logged_in();
 
 
 
+
 function form_send_message_display($msg_recipients = '', $msg_message = '', $sticky_recipients = '', $sticky_message = '') {
     
     
@@ -56,28 +57,22 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                     }
                  </script>
 
-                <!--  AJAX for updating conversation: -->
+                <!--  AJAX for updating conversation:
+                      Other ajax calls have a php wrapper.
+                      This async_get_conversation() is included in this print statement to
+                      maintain scrolling behaviours which depend on code in this print statement.
+                      wrapping async_get_conversation() would then not be in scope of the scrolling behaviour code
+                      which is printed at the end of this print statement. -->
                 <script> 
                 
 
                 let url = "http://localhost/messaging_app220120/ajax_messages_display_conversation.php";
                 let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").getAttribute("value");       
-
-                // //scrolling vars and function. stops ajax from updating while scrolling.
-                // let body = document.querySelector("body#body");
-                // let is_scrolling = 0;
-
-                // body.onscroll = (event) => {
-                //     is_scrolling = 1;
-                //     setTimeout(() => {
-                //         is_scrolling = 0;
-                //     }, 20000);
-                // };
                 
                 // async function   
-                get_conversation(url);
+                async_get_conversation(url);
                 
-                async function get_conversation(url) {
+                async function async_get_conversation(url) {
                     
                     // fetch response from the url. Send the recipient variables through headers.
                     let response = await fetch(url, {
@@ -101,7 +96,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                         }                        
                         
                         // call get_conversation to make recursive loop at a delay of x seconds.
-                        setTimeout(() => get_conversation(url), 3000);
+                        setTimeout(() => async_get_conversation(url), 3000);
                         
                     } else {
                         document.getElementById("conversation").innerHTML = "response not ok";                        
@@ -109,14 +104,13 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 }
                 </script>
                 ';
-                // somehow this commented-out function doesnt work, yet virtually the same function works when it is included in the above print statement.
-                // I am getting wierd networking errors that I don't understand. Some of the other async wrapper functions also have inscrutable errors.
-                // Later I will try to change the address from localhost to 127.0.0.1 in another branch.
-                // messages_ajax_display_conversation("http://localhost/messaging_app220120/ajax_messages_display_conversation1.php", $sticky_recipients, "conversation", 3000); 
+                //scrolling behaviour is better when async function for displaying messages is not wrapped in a php function.
+                // messages_ajax_display_conversation("http://localhost/messaging_app220120/ajax_messages_display_conversation.php", $sticky_recipients, "conversation", 3000); 
                 messages_ajax_conversation_links("http://localhost/messaging_app220120/ajax_messages_conversation_links.php", "participants", "ajxmenu", 3500);  
                 messages_ajax_messages_menu_newmsg("http://localhost/messaging_app220120/ajax_messages_menu_newmsg.php", "menu_message", "menu_message", 3500);
                 print '
                 <script>
+                
                 let body = document.querySelector("body#body");
                 let is_scrolling = 0;
 

@@ -369,7 +369,7 @@ function messages_ajax_conversation_links($url, $body, $id, $delay = 10000){
         let response = await fetch(url, {
             method: "POST", 
             headers: {"content-type": "application/x-www-form-urlencoded"},
-            body: `async="${body}"`,
+            body: `async=${body}`,
         });                    
         
         // check if the response was successful.
@@ -392,6 +392,7 @@ function messages_ajax_conversation_links($url, $body, $id, $delay = 10000){
 
     ';
 }
+
 function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
     print '
     <script>
@@ -404,7 +405,7 @@ function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
         let response = await fetch(url, {
             method: "POST", 
             headers: {"content-type": "application/x-www-form-urlencoded"},
-            body: `sticky="${body}"`,
+            body: `sticky=${body}`,
         });                    
         
         // check if the response was successful.
@@ -412,9 +413,12 @@ function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
            
             // convert the response to text
             let text = await response.text();
-   
+           
             // replace the inner html of the id-identified element:
             document.getElementById(id).innerHTML = text;
+
+            document.getElementById("message_form").scrollIntoView();
+
             
             // recursive call with delay:
             setTimeout(() => async_get_conversation(url, body, id, delay), delay);
@@ -426,6 +430,7 @@ function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
     </script>
     ';
 }
+
 function messages_ajax_messages_menu_newmsg($url, $body, $id, $delay = 10000){
     print '
     <script>
@@ -438,7 +443,7 @@ function messages_ajax_messages_menu_newmsg($url, $body, $id, $delay = 10000){
         let response = await fetch(url, {
             method: "POST", 
             headers: {"content-type": "application/x-www-form-urlencoded"},
-            body: `async="${body}"`,
+            body: `async=${body}`,
         });                    
         
         // check if the response was successful.
