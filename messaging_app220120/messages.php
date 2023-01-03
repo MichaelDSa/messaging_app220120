@@ -23,7 +23,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
     print '
     <div class="container">
         <div class="control" style="margin: 0 auto; max-width: 600px;">
-            <div class="box" style="">
+            <div id="msgbox" class="box">
             <div id="conversation"></div>  
             <div id="interface_position" class="" style="border-radius: 5px;">          
             <span id="menu" class="button is-small is-link has-text-white" style="padding: 0px 12px; margin-top: 0rem; width:100%;border-radius: 5px;">menu
