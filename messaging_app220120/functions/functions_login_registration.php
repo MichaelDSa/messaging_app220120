@@ -357,6 +357,125 @@ function form_valid_usernames($array){
 }
 
 
+function messages_ajax_conversation_links($url, $body, $id, $delay = 10000){
+    print '
+    <script>
+
+    async_conversation_links();
+
+    async function async_conversation_links(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
+        
+        // fetch response from the url. Send the recipient variables through headers.
+        let response = await fetch(url, {
+            method: "POST", 
+            headers: {"content-type": "application/x-www-form-urlencoded"},
+            body: `async="${body}"`,
+        });                    
+        
+        // check if the response was successful.
+        if(response.ok && response.status == 200){
+           
+            // convert the response to text
+            let text = await response.text();
+            
+            // replace the inner html of the element identified by the id:
+            document.getElementById(id).innerHTML = text;
+            
+            // recursive call with delay:
+            setTimeout(() => async_conversation_links(url, body, id, delay), delay);
+            
+        } else {
+            document.getElementById(id).innerHTML = "res not ok";
+        }
+    }
+    </script>
+
+    ';
+}
+function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
+    print '
+    <script>
+
+    async_get_conversation();
+
+    async function async_get_conversation(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
+        
+        // fetch response from the url. Send the variables through headers.
+        let response = await fetch(url, {
+            method: "POST", 
+            headers: {"content-type": "application/x-www-form-urlencoded"},
+            body: `sticky="${body}"`,
+        });                    
+        
+        // check if the response was successful.
+        if(response.ok && response.status == 200){
+           
+            // convert the response to text
+            let text = await response.text();
+   
+            // replace the inner html of the id-identified element:
+            document.getElementById(id).innerHTML = text;
+            
+            // recursive call with delay:
+            setTimeout(() => async_get_conversation(url, body, id, delay), delay);
+            
+        } else {
+            document.getElementById(id).innerHTML = "res not ok";
+        }
+    }
+    </script>
+    ';
+}
+function messages_ajax_messages_menu_newmsg($url, $body, $id, $delay = 10000){
+    print '
+    <script>
+
+    async_menu_newmsg();
+
+    async function async_menu_newmsg(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
+        
+        // fetch response from the url. Send the recipient variables through headers.
+        let response = await fetch(url, {
+            method: "POST", 
+            headers: {"content-type": "application/x-www-form-urlencoded"},
+            body: `async="${body}"`,
+        });                    
+        
+        // check if the response was successful.
+        if(response.ok && response.status == 200){
+           
+            // convert the response to text
+            let text = await response.text();
+            
+            // replace the inner html of the element identified by the id:
+            document.getElementById(id).innerHTML = text;
+            
+            // recursive call with delay:
+            setTimeout(() => async_menu_newmsg(url, body, id, delay), delay);
+            
+        } else {
+            document.getElementById(id).innerHTML = "res not ok";
+        }
+    }
+    </script>
+    ';
+}
+
+function messages_menu_newmsg(){
+
+    $conversations = messages_unique_conversations();
+    $total_unread = 0;
+    $c = count($conversations);
+    for($i=0; $i<$c; $i++){
+        $total_unread += messages_conversation_unread($conversations[$i]);
+    }
+
+    $message = $total_unread > 0 ? "NEW: " . $total_unread : "";
+
+    return $message;
+
+}
+
 function messages_display_conversation($recipients){
     if(empty($recipients)){
         // print "<p>NULL parameter</P>";
@@ -382,53 +501,105 @@ function messages_display_conversation($recipients){
 
     //class=("columns is-centered")("level-right")("level-left")
     print '';
-    for($i=0; $i<count($conversation); $i++){
-        $box_position = $username == $conversation[$i]['speaker'] ? '<div class="block level-right">' : '<div class="block level-left">';
+    $c = count($conversation);
+    for($i=0; $i<$c; $i++){       
+        $box_position = $username == $conversation[$i]['speaker'] ? '<div class="block level-right" style="margin: 1.1rem 0rem">' : '<div  class="block level-left" style="margin: 1.1rem 0rem">';
         $box_color = $username == $conversation[$i]['speaker'] ? 'has-background-info has-text-white-ter' : 'has-background-grey-lighter';
+        $span_float = $username == $conversation[$i]['speaker'] ? "<span style='float:right; font-size: 0.9rem;'>" : "<span style='float:left; font-size: 0.9rem;'>";
         $speaker = htmlspecialchars($conversation[$i]['speaker']);
         $message = htmlspecialchars($conversation[$i]['message']);
         $message = wordwrap($message, 55, "<br>");
         $date = htmlspecialchars($conversation[$i]['date_entered']);           
         print $box_position . '
-        <p class="box ' . $box_color . '" >' . $speaker . ':<br> ' . $message . ' <br>date:' . $date . '</p>
+        <p class="box ' . $box_color . '" style="padding: 0.5rem 1rem 0.5rem 1rem;" >' . $span_float . $speaker . ':</span><br><span style="font-size: 1.1rem"> ' . $message . '</span> <br><span style="font-size: 0.7rem;">' . $date . '</span></p>
         </div>
         ';
 
     }
-    print '</div> </div> </div> </div></div></div>';
+    print '</div> </div> </div> </div></div></div><script>document.getElementById("footer").scrollIntoView();</script>';
+
+    //set the "viewed" column to 1 in all messages that have been printed:    
+    $query_viewed =  "UPDATE `$username` SET viewed=1 WHERE participants='$participants'";
+    mysqli_query($dbc_first, $query_viewed);
 
     
     mysqli_close($dbc_first);
     
 }
 
-
+//returns a list of buttons which link to the corresponding conversation.
+// each button is labeled with the recipients, and has a new message indicator.
 function messages_conversation_links(){
-    include('../mysqli_connect_first.php');
 
-    $table_username = $_SESSION['session_username'];
+    $unique_conversations = messages_unique_conversations();
 
-    $query = "SELECT DISTINCT participants FROM `$table_username`";
+    // each link will be a button.
+    // these assignments make the conversation links, ultimately assigned to $lines.
+    $p_form =  '<p><form action="messages.php" method="post">';
+    $form_p = '</form></p>';
+    $input = array();
+    $lines = "";
 
-    $query_result = mysqli_query($dbc_first, $query);    
+    //each link will 
+    //vars for new message indicators
+    $value_new_messages = "";
+    $conversation_color = "is-link";
 
-   
-    
-    while($row = mysqli_fetch_array($query_result)){
-        $unique_conversations[] = $row['participants'];            
+    for($i=0; $i<count($unique_conversations); $i++){
+
+        $num_new_messages = messages_conversation_unread($unique_conversations[$i]);
+        
+        if($num_new_messages > 0){
+            $value_new_messages = "<span class='has-text-white' style='background-color: hsl(0, 100%, 77%); border-radius:10px; padding: 0px 10px; margin:3px 5px;'>new: {$num_new_messages}</span>";  
+            $conversation_color = "is-success";  
+        } else {
+            $value_new_messages = "";
+            $conversation_color = "is-link";
+        }
+
+        $input[$i] = '<input type="hidden" name="unique_conversation" value="' . $unique_conversations[$i] . '"><button id="JS_unique_conversation' . $i . '" type="submit" class="button ' . $conversation_color . ' is-light is-outlined is-small is-rounded" style="margin:2px; width:100%;" value="' . $unique_conversations[$i] . '">' . $unique_conversations[$i] . ' '  . $value_new_messages . '</button>';
+        $lines .= $p_form . $input[$i] . $form_p;
     }
 
-    if(!isset($unique_conversations)){
+    return $lines; 
+
+}
+
+//returns number of unread messages of a particular conversation.
+function messages_conversation_unread($participants){
+
+    //Does $participants match any messages_unique_conversations() indices?
+    $unique_conversations = messages_unique_conversations();
+    $c = count($unique_conversations);
+    $participants_found = false;
+    for($i=0; $i<$c; $i++){
+        if($unique_conversations[$i] === $participants){
+         $participants_found = true;
+         break;
+        }
+    }
+    if(!$participants_found){
         return;
     }
 
-    for($i=0; $i<count($unique_conversations); $i++){
-        print '<p><form action="messages.php" method="post">';
-        print '<input type="hidden" name="unique_conversation" value="' . $unique_conversations[$i] . '"><input type="submit" value="' . $unique_conversations[$i] . '">';        
-        print '</form><p>';
+    //Now check if $participants have any viewed=0 in DB:
+    include('../mysqli_connect_first.php');
+
+    $table_username = $_SESSION['session_username'];
+    $query = "SELECT viewed from `$table_username` WHERE participants='$participants'";
+    $query_result = mysqli_query($dbc_first, $query);
+    while($row = mysqli_fetch_array($query_result)){
+        $viewed[] = $row['viewed'];
     }
-    // print '</ul></p>';
-    mysqli_close($dbc_first);
+
+    $new_message = 0;
+    
+    $c = count($viewed);
+    for($i=0; $i<$c; $i++){
+        !$viewed[$i] ? $new_message++ : $new_message;
+    }
+
+    return $new_message;
 
 }
 
@@ -511,6 +682,29 @@ function messages_send2($speaker, $recipients, $message){
 
     
 
+
+}
+
+//returns an array of the unique participant members of each separate conversation.
+function messages_unique_conversations(){
+    include('../mysqli_connect_first.php');
+
+    $table_username = $_SESSION['session_username'];
+    $query = "SELECT DISTINCT participants FROM `$table_username`";
+
+    $query_result = mysqli_query($dbc_first, $query);  
+    
+    while($row = mysqli_fetch_array($query_result)){
+        $unique_conversations[] = $row['participants'];            
+    }
+
+    mysqli_close($dbc_first);
+
+    if(!isset($unique_conversations)){
+        return;
+    }
+
+    return $unique_conversations;
 
 }
 

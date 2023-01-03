@@ -22,46 +22,60 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
 
     print '
     <div class="container">
-        <div class="control" style="margin: 0 auto; width: 600px">
-            <div class="box">
-            <div id="conversation"></div>
-                <div class="level">
-                    <div class="level-item">
-                        <form id="message_form" action="messages.php" method="post">
-                            <div class="field has-addons">
-                                <p id="JS_sticky_recipients" hidden>'. $sticky_recipients . '</p>
-                                <p class="control"><input class="input is-info" type="text" name="recipients" placeholder="Add Recipients..." value="' . $sticky_recipients . '"></p>
-                                <p class="control"><input class="input is-info" type="text" name="message" placeholder="Add Your Message..." value="' . $sticky_message . '" autofocus></p>
-                                <p class="control"><input class="button has-background-link has-text-white" type="submit" value="Send"></p> 
-                            </div>
+        <div class="control" style="margin: 0 auto; max-width: 600px;">
+            <div class="box" style="">
+            <div id="conversation"></div>  
+            <div id="interface_position" class="" style="border-radius: 5px;">          
+            <span id="menu" class="button is-small is-link has-text-white" style="padding: 0px 12px; margin-top: 0rem; width:100%;border-radius: 5px;">menu
+                <span id="menu_message" class="has-text-white" style="background-color: hsl(0, 100%, 77%); border-radius:10px; padding: 0px 10px; margin:3px 5px;">
+                </span>
+            </span>
+            <div id="menu-div" class="box is-hidden" style="max-height:240px; width:auto;overflow: auto;" >
+                <p class="has-text-info">other conversations:</p>
+                <div id="ajxmenu"></div>
+            </div>
+ 
+                <div class=" box level" style="width:100%; padding:0px; margin: 10px 0px 1.5rem 0px;">
+                <div class="level-item">
+                        <form id="message_form" action="messages.php" method="post" style="width:100%;">
+                            <div class="field has-addons">                                
+                                <p class="control is-expanded" ><input id="JS_sticky_recipients" class="input is-info" type="text" name="recipients" placeholder="Add Recipients..." value="' . $sticky_recipients . '"></p>
+                                <p class="control is-expanded" ><input class="input is-info" type="text" name="message" placeholder="Add Your Message..." value="' . $sticky_message . '" autofocus></p>
+                                <p class="control"><button class="button has-background-link has-text-white" type="submit" value="Send">Send</button></p> 
+                            </div>    
                         </form>
-                        <script>document.getElementById("message_form").scrollIntoView();</script>
                     </div>
                 </div>
+                </div>
+                <script>
+                    let menu = document.querySelector("span#menu");    
+                    menu.onclick = (event) => {
+                        document.querySelector("div#menu-div").classList.toggle("is-hidden");
+                        document.querySelector("form#message_form").scrollIntoView();
+                        
+                    }
+                 </script>
 
                 <!--  AJAX for updating conversation: -->
                 <script> 
                 
 
                 let url = "http://localhost/messaging_app220120/ajax_messages_display_conversation.php";
-                let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").innerHTML;       
+                let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").getAttribute("value");       
 
-                //scrolling vars and function. stops ajax from updating while scrolling.
-                let body = document.querySelector("body#body");
-                let is_scrolling = 0;
-                body.onscroll = (event) => {
-                    is_scrolling = 1;
-                    setTimeout(() => {
-                        is_scrolling = 0;
-                    }, 20000);
-                };
-                
+                // //scrolling vars and function. stops ajax from updating while scrolling.
+                // let body = document.querySelector("body#body");
+                // let is_scrolling = 0;
 
+                // body.onscroll = (event) => {
+                //     is_scrolling = 1;
+                //     setTimeout(() => {
+                //         is_scrolling = 0;
+                //     }, 20000);
+                // };
                 
-                // async function
+                // async function   
                 get_conversation(url);
-                
-
                 
                 async function get_conversation(url) {
                     
@@ -69,7 +83,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                     let response = await fetch(url, {
                         method: "POST", 
                         headers: {"content-type": "application/x-www-form-urlencoded"},
-                        body: `sticky_recipients=${JS_sticky_recipients}`,
+                        body: `sticky=${JS_sticky_recipients}`,
                     });                    
                     
                     // check if the response was successful.
@@ -80,51 +94,44 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                         
                         // replace the inner html of div with id="conversation"
                         document.getElementById("conversation").innerHTML = conversation;
+
+                        // position screen to interface only if user is NOT scrolling through the message.
                         if(!is_scrolling){
                             document.getElementById("message_form").scrollIntoView();
-                        }
-                        
+                        }                        
                         
                         // call get_conversation to make recursive loop at a delay of x seconds.
                         setTimeout(() => get_conversation(url), 3000);
+                        
                     } else {
-                        document.getElementById("conversation").innerHTML = "response not ok";
-                        // document.getElementById("message_form").scrollIntoView();
+                        document.getElementById("conversation").innerHTML = "response not ok";                        
                     }
                 }
-
-                function while_scroll(id = "message_form"){
-                    return id;
-                }
-                
-
-                //////////////////////////////////////////////////////////////////////////////////
-
-                //This is a XMLHttpRequest() version of the above code. It also works, but will need updating to be usable.
-                // XHR_get_conversation(url);
-                // setInterval(() => XHR_get_conversation(url), 3000);
-                
-                // function XHR_get_conversation(url){
-
-                //     let XHR = new XMLHttpRequest();
-                //     XHR.open("POST", url, true);
-                //     XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                //     XHR.send("sticky_recipients=" + JS_sticky_recipients + "");
-                //     XHR.onreadystatechange = function() {
-                //         if (this.readyState == 4 && this.status == 200) {
-                //             document.getElementById("conversation").innerHTML = this.responseText;
-                //         }
-                //     }
-
-                // }
-
-                
-
-
-                
                 </script>
-                
-    ';
+                ';
+                // somehow this commented-out function doesnt work, yet virtually the same function works when it is included in the above print statement.
+                // I am getting wierd networking errors that I don't understand. Some of the other async wrapper functions also have inscrutable errors.
+                // Later I will try to change the address from localhost to 127.0.0.1 in another branch.
+                // messages_ajax_display_conversation("http://localhost/messaging_app220120/ajax_messages_display_conversation1.php", $sticky_recipients, "conversation", 3000); 
+                messages_ajax_conversation_links("http://localhost/messaging_app220120/ajax_messages_conversation_links.php", "participants", "ajxmenu", 3500);  
+                messages_ajax_messages_menu_newmsg("http://localhost/messaging_app220120/ajax_messages_menu_newmsg.php", "menu_message", "menu_message", 3500);
+                print '
+                <script>
+                let body = document.querySelector("body#body");
+                let is_scrolling = 0;
+
+                body.onscroll = (event) => {
+                    is_scrolling = 1;
+                    setTimeout(() => {
+                        is_scrolling = 0;
+                    }, 20000);
+                };
+                // position screen to interface only if user is NOT scrolling through the message.
+                if(!is_scrolling){
+                    document.getElementById("message_form").scrollIntoView();
+                }  
+                </script>
+                ';
 
 }
 
@@ -150,7 +157,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // messages_display_conversation($_POST['recipients']);
         
         //display 'links' to all separate, unique conversations (one of the user's past conversations)
-        messages_conversation_links();
+        // print messages_conversation_menu();
 
     } else if (isset($_POST['unique_conversation']) ){ //if user selects a past conversation button
         //display form with the past conversation recipients as sticky.
@@ -161,7 +168,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // messages_display_conversation($_POST['unique_conversation']);
 
         //display all past conversations
-        messages_conversation_links();
+        // print messages_conversation_menu();
     
         
     } else { //resubmit form with messages and stickies
@@ -175,12 +182,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $sticky_message = isset($_POST['message']) ? $_POST['message'] : '';
 
         form_send_message_display($msg_recipients, $msg_message, $sticky_recipients, $sticky_message);
-        messages_conversation_links();
+        // print messages_conversation_menu();
     }
     
 } else {
     form_send_message_display();
-    messages_conversation_links();
+    // print messages_conversation_menu();
 }
 
 

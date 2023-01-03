@@ -2,16 +2,19 @@
 //include("functions/functions_login_registration.php");
 ?>
 
-<footer class="box">
-    <p>----------FOOTER----------</p>
+<!-- <footer class="box">     -->
+<footer id="footer"style=" font-size: 0.75rem;">
     <p>
+        <!-- <p>messaging_app220120 By Michael D'Sa</p> -->
         <?php 
         $display_user_links = session_user_logged_in(1) ? '<a href="logout.php">|log out|</a>' : '<a href="login.php">|log in|</a>';
-        print '<p>' . $display_user_links . '</p>' .
-        '<p>' . date('g:ia, l F j, Y ') . '</p>';
+        print '<span>' . $display_user_links . '</span>';
+        print '<span style="float:right;">messaging_app220120 by Michael D\'Sa</span>';
+
+        // Time: ' . date('g:ia, l F j, Y ') . "<br>"
         ?>
     </p>
-    <p>Message app 220120 begun on 01/20/2022</p>
+    
 </footer>
 </body>
 </html>

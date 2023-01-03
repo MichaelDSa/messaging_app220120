@@ -39,8 +39,8 @@ function form_login_display($msg_username = 'Please enter your username:', $msg_
     }
 
     print '
-    <div class="columns is-mobile is-centered">
-        <form class="box" style="width: 424px" action="login.php" method="post"> 
+    <div class="container" style="">
+        <form class="box" style="margin: auto;max-width: 424px" action="login.php" method="post"> 
             <h2 class="title" style="width: 376px; text-align: center;">Login:</h2>            
                 <div class="field">                        
                     <p class="' . $msg_color_u .  '  is-size-5" style="width: 424px">' . $msg_username . '</p>
