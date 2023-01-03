@@ -13,4 +13,7 @@ for($i=0; $i<$c; $i++){
 }
 
 // print messages_conversation_unread($uc[2]);
-// $users = 
+$usrs_comma = "user1, user2, user3, user13 user13 user13 user1 user4";
+$ar = form_separate_recipient_usernames($usrs_comma);
+$users = implode(' ', $ar);
+print "<br> {$users}<br>";

@@ -607,7 +607,11 @@ function messages_send($speaker, $recipients, $message){
     include('../mysqli_connect_first.php');
     //preparing participants data
     $participants = str_append_trim_sort($recipients, $speaker);
-    $array_recipients = explode(' ', $participants);
+    $part = form_separate_recipient_usernames($participants);
+    $participants = implode(' ', $part);
+    $speaker_array = form_separate_recipient_usernames($speaker);
+    $speaker = implode(' ', $speaker_array);
+    $array_recipients = form_separate_recipient_usernames($participants);
 
     //escaped data for columns: username|participants|speaker|message|viewed|date_entered
     $participants = mysqli_real_escape_string($dbc_first, $participants);

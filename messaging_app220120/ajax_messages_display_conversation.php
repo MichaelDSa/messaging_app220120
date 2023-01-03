@@ -8,8 +8,15 @@ session_start();
 session_user_logged_in();
 
 if(isset($_POST['sticky'])){
-    $sticky_recipients = prepString($_POST['sticky']);
+
+    //string cleaning:
+    $s_recipients = prepString($_POST['sticky']);
     
+    //remove commas:
+    $s_recipients_array = form_separate_recipient_usernames($s_recipients);
+    $sticky_recipients = implode(' ', $s_recipients_array);
+
+    //validation:
     if(validate_post($sticky_recipients)){
         messages_display_conversation($sticky_recipients);        
     }    
