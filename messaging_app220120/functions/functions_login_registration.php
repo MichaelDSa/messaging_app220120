@@ -385,7 +385,7 @@ function messages_ajax_conversation_links($url, $body, $id, $delay = 10000){
             setTimeout(() => async_conversation_links(url, body, id, delay), delay);
             
         } else {
-            document.getElementById(id).innerHTML = "res not ok";
+            document.getElementById(id).innerHTML = "Start a conversation -- send someone a message!";
         }
     }
     </script>
@@ -418,13 +418,12 @@ function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
             document.getElementById(id).innerHTML = text;
 
             document.getElementById("message_form").scrollIntoView();
-
             
             // recursive call with delay:
             setTimeout(() => async_get_conversation(url, body, id, delay), delay);
             
         } else {
-            document.getElementById(id).innerHTML = "res not ok";
+            document.getElementById(id).innerHTML = "Send a message! add recipients, or click on a conversation in the menu.";
         }
     }
     </script>
@@ -459,7 +458,7 @@ function messages_ajax_messages_menu_newmsg($url, $body, $id, $delay = 10000){
             setTimeout(() => async_menu_newmsg(url, body, id, delay), delay);
             
         } else {
-            document.getElementById(id).innerHTML = "res not ok";
+            document.getElementById(id).innerHTML = "";
         }
     }
     </script>
@@ -478,6 +477,41 @@ function messages_menu_newmsg(){
     $message = $total_unread > 0 ? "NEW: " . $total_unread : "";
 
     return $message;
+
+}
+
+// This function will take the variable '$sticky_recipients' from messages.php
+// conversations with those specific participants will be deleted from the user's table. 
+function messages_delete_conversation($participants){
+
+    if(empty($participants) || strlen($participants) < 5){
+        return false;
+    }
+
+    include('../mysqli_connect_first.php');
+
+    $tablename = mysqli_real_escape_string($dbc_first, $_SESSION['session_username']);
+    $part_array = form_separate_recipient_usernames($participants);
+    $part_implode = implode(' ', $part_array);
+    $participants = mysqli_real_escape_string($dbc_first, $part_implode);
+
+    
+    $query ="DELETE FROM {$tablename} WHERE participants='{$participants}'";
+
+    mysqli_query($dbc_first, $query);
+
+    //error report and redirect:
+    if(mysqli_affected_rows($dbc_first) < 0){
+        $date = date('g:ia, l F j, Y ');
+        $msg = $date . ": 'function messages_delete_conversation({$participants})' was unsuccessful." . PHP_EOL . "Query: {$query}" . PHP_EOL . "mysqli_affected_rows() is less than 0. ERROR: " . mysqli_error() .PHP_EOL;
+        file_put_contents("log_delete_conversation.txt", $msg, FILE_APPEND);
+        print "see log <br>";
+        mysqli_close($dbc_first);
+        return false;
+    } else {
+        mysqli_close($dbc_first);
+        return true;
+    }
 
 }
 
@@ -532,7 +566,7 @@ function messages_display_conversation($recipients){
     
 }
 
-//returns a list of buttons which link to the corresponding conversation.
+// returns a list of buttons which link to the corresponding conversation.
 // each button is labeled with the recipients, and has a new message indicator.
 function messages_conversation_links(){
 
@@ -570,6 +604,141 @@ function messages_conversation_links(){
 
 }
 
+// returns list of buttons which link to admin pages such as logout.php, 
+function messages_other_buttons($selection = '', $sticky_recipients = ''){
+    if($selection == ''){
+        return;
+    }
+    
+    //inner functions for html templates
+    function label($for = '', $html = ''){
+        if($for == '' && $html == ''){
+            return '</label>';
+        }
+        return "<label for='{$for}'>{$html}";
+    }
+    function form($action = '', $method = ''){
+        if($action == '' && $method == ''){
+            return '</form>';
+        }
+        return "<form action='{$action}' method='{$method}'>";
+    }
+    function input_hidden($name, $value){
+        return "<input type='hidden' name='{$name}' value='{$value}'>";
+    }
+    function a($href = '', $class = '', $style = ''){
+        if($href == '' && $class == '' && $style == ''){
+            return '</a>';
+        } 
+        $h = "href='{$href}'";
+        $c = "class='{$class}'";
+        $s = "style='{$style}'";
+        return "<a {$h}{$c}{$s}>";        
+    }
+    function button($class ='', $style = '', $value = '', $html = ''){
+        if($class == '' && $style == '' && $value == '' && $html == ''){
+            return '</button>';
+        }        
+        return "<button class='{$class}' style='{$style}' value='{$value}'>{$html}";        
+    }
+
+
+    // variables for class and style html attribute values
+    $class_red_buttons = 'button is-danger is-light is-outlined is-small is-rounded';
+    $class_yellow_buttons = 'button is-warning is-light is-outlined is-small is-rounded';
+    $class_blue_buttons = 'button is-link is-light is-outlined is-small is-rounded';
+    $class_blue_buttons_dark = 'button is-link is-large';
+    $style_menu_buttons = 'margin:2px; width:100%;';
+    $style_settings_buttons = 'margin:2px; width:50%;';
+    
+    //other variables:
+    include('../mysqli_connect_first.php');
+    $user = mysqli_real_escape_string($dbc_first, $_SESSION['session_username']);
+    $itslog = session_user_logged_in(1) ? 'logout' : 'login';
+    $sticky_recipients = isset($sticky_recipients) ? $sticky_recipients : "";
+    mysqli_close($dbc_first);
+
+    //BUTTONS:
+
+    //logout button:
+    $logout_button = a("{$itslog}.php", $class_red_buttons, $style_menu_buttons) . "{$itslog}" . a();
+    $logout_end_session = form("logout.php", "post") . input_hidden("log_out", "yes") . label("logout", "<span class='has-text-danger'>Click to log out:</span>") . button($class_red_buttons, $style_menu_buttons, "yes", "Log out Now." ) . button() . label() . form();
+
+    //register new user button
+    $register_button = a("register_user.php") . button($class_blue_buttons, $style_menu_buttons, "register", "Register new user...") . button() . a();
+    $register_button_big = a("register_user.php", $class_blue_buttons_dark, $style_menu_buttons) . "Register New User" . a();
+
+    //'delete this conversation' button
+    $delete_conversation_button = form("messages.php", "post") . input_hidden("delete", $sticky_recipients) . button($class_red_buttons, $style_menu_buttons, $sticky_recipients, "delete this conversation...") . button() . form();
+    
+    //'more settings...' button
+    $more_settings_button = a("more_settings.php") . button($class_yellow_buttons, $style_menu_buttons, "more_settings.php", "more settings...") . button() . a();
+
+    //'change password...' button:
+    $change_password_button = form("more_settings.php", "post") . input_hidden("change_password", $user) . button($class_red_buttons, $style_menu_buttons, $user, "change password...") . button() . form();
+
+    //'back to messaging...'
+    $messaging_button = a("messages.php") . button($class_blue_buttons, $style_menu_buttons, "back", "<- back to messaging...") . button() . a();
+
+    //'Send Messages Now'
+    $send_messages_button = a("messages.php", $class_blue_buttons_dark, $style_menu_buttons) . "Send Messages Now" . a();
+
+
+    //BUTTON COLLECTIONS:
+    // menu buttons:
+    $menu_buttons = $logout_button . $delete_conversation_button . $more_settings_button;
+
+    // buttons for more_settings.php
+    $settings_buttons = $messaging_button . $change_password_button . $logout_button;
+
+    // buttons for logout page:
+    $logout_page_buttons = $logout_end_session . "<p class='has-text-info is-size-5' style='padding:30px 0px 15px 0px;'>Or send more messages/explore settings...</p>" . $more_settings_button . $messaging_button;
+
+    // buttons shown after logging out:
+    $has_logged_out = $logout_button . $register_button;
+
+    // buttons shown after logging in:
+    $has_logged_in = '<div style="margin-top: 1.5rem;"></div>' . $send_messages_button . '<div style="min-height:55vh;"></div>' . $logout_button;
+
+    switch ($selection) {
+
+        //individual buttons:
+        case 'log_in_or_out':
+            return $logout_button;
+
+        case 'logout_now':
+            return $logout_end_session;
+
+        case 'back_to_messaging':
+            return $messaging_button;
+
+        case 'register_button':
+            return $register_button_big;
+
+        
+        // button collections:            
+        case 'menu_buttons':
+            return $menu_buttons;
+
+        case 'settings_buttons':
+            return $settings_buttons;
+
+        case 'more_settings':
+            return $more_settings_button;
+
+        case 'logout':
+            return $logout_page_buttons;
+
+        case 'logged_out':
+            return $has_logged_out;
+
+        case 'logged_in':
+            return $has_logged_in;
+    }
+
+ 
+}
+
 //returns number of unread messages of a particular conversation.
 function messages_conversation_unread($participants){
 
@@ -596,6 +765,8 @@ function messages_conversation_unread($participants){
     while($row = mysqli_fetch_array($query_result)){
         $viewed[] = $row['viewed'];
     }
+
+    mysqli_close($dbc_first);
 
     $new_message = 0;
     
@@ -725,10 +896,6 @@ function session_user_logged_in($boolean_false = 0){
 
     $ternary_session = ( !isset($_SESSION['session_username']) ? false : isset($_SESSION['time_logged_in']) ) ? true : false;
 
-    // if(isset($_SESSION['time_logged_in']) && ($_SESSION['time_logged_in'] + (30 * 30)) > time() ) {
-    //     session_messages_delete();
-    //     return false;
-    // }
     if($boolean_false == 1) {
         if($ternary_session){
             return true;
@@ -740,9 +907,34 @@ function session_user_logged_in($boolean_false = 0){
         return true;
     } else {
         // print 'FALSE';
-        print '<h2>access is only for users who have logged in. Please log in!</h2>';
-        print '<h2><a href="login.php">log in here</a></h2>';
-        exit();
+        print '
+        <div class="container" style="min-height: 100vh;">
+            <div class="box" style="margin: 0 auto; min-height: 100vh; max-width: 600px;">
+                <div class="control" style="margin: 0 auto; max-width: 600px;">
+                    <div id="msgbox" class="box" style="">
+                    <p class="has-text-info" style="font-size: 2.3rem;">Session expired. Please log in.</p>
+                    ' . messages_other_buttons("log_in_or_out") . ' 
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <footer id="footer" class="box has-text-centered" style="margin:auto; max-width:600px; padding: 2px 20px; font-size: 0.75rem;">
+        <p>
+         <span>messaging_app220120 by Michael D\'Sa</span>
+            <style>
+                @media(max-width: 440px){
+                    #msgbox, #footer{
+                        padding: 5px;
+                    }
+                }
+            </style>
+        </p>
+        
+    </footer>
+    </body>
+    </html>
+    ';
+    exit();
     }    
 
     return false;
@@ -778,8 +970,6 @@ function str_append_trim_sort($str_list, $str_append){
     return $return_string;
 }
 
-
-
  // returns true if user is in authentication table and has separate table for conversations.
  function user_exists($str) {
     // 1) a registered user must have their own table to store conversations.
@@ -792,7 +982,6 @@ function str_append_trim_sort($str_list, $str_append){
     }
 
  }
-
 
 // 1) check if user has table
 function user_has_table($str) {
@@ -861,6 +1050,23 @@ function user_password_matches($username, $password) {
 
 }
 
+function user_password_change($username, $new_password) {
 
+    $success = FALSE;
+
+    include('../mysqli_connect_first.php');
+    $username_clean = mysqli_real_escape_string($dbc_first, $username);
+    $password_clean = mysqli_real_escape_string($dbc_first, $new_password);
+
+    $query = "UPDATE authentication SET password='$new_password' WHERE username='$username_clean'";
+
+    if(mysqli_query($dbc_first, $query) !== FALSE){
+        $success = TRUE;
+    }
+
+    mysqli_close($dbc_first);
+
+    return $success;
+}
 
 ?>

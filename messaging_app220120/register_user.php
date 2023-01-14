@@ -95,9 +95,11 @@ function form_register_display(
         $field_color_p2 = !isset($_POST['password_2']) ? 'is-info' : (form_handler('password_2', 0)  ? 'is-success' : 'is-danger');
 
         print '
-        <div class="columns is-mobile is-centered">
-            <form class="box" style="width: 424px" action="register_user.php" method="post">
-                <h2 class="title" style="width: 376px; text-align: center">Join the App</h2>
+        <div class="container">
+            <form class="box" style="margin:auto; max-width: 600px" action="register_user.php" method="post">
+                <h2 class="title" style="margin-bottom: 0.5rem; text-align: center">Register New User</h2>
+                <p class="has-text-centered is-size-4">or login:</p>
+                <div style="width:50%; margin: 5px 25%">'. messages_other_buttons('log_in_or_out') .'</div>
                     <div class="field">
                         <p class="' . $color_msg_u1 . '">' . $msg_username . '</p>
                         <label class="label" for="username">Username: </label>
@@ -136,7 +138,7 @@ function form_register_display(
                     <div class="field">
                         <label class="label" for="submit"></label>
                         <div class="control" style=" text-align: center">
-                            <input class="button is-link" style="width: 141px" type="submit" value="Join the App!">
+                            <input class="button is-link" style="width: 141px" type="submit" value="Join the App!">                            
                         </div>
                     </div>
             </form>
@@ -162,33 +164,41 @@ function form_register_display(
 
             //test the query
             if(mysqli_affected_rows($dbc_first) == 1) {
-                print '<p>' . date('Y, m, d, G:i:s')  . ' ' . $username . ' registered as new user</p>';
+               
                 // create new table for user
                 $new_table_query = "CREATE TABLE `$username` (id INT UNSIGNED NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, participants VARCHAR(255) NOT NULL, speaker VARCHAR(255) NOT NULL, message TEXT NOT NULL, viewed TINYINT(1) UNSIGNED NOT NULL, date_entered TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id)) CHARACTER SET utf8";
                 
                 if(mysqli_query($dbc_first, $new_table_query) !== FALSE) {
-                    print '<p>table created</p>';
+
+                    mail($email, 'messaging_app220120 verification', 'Thank you for registering!');
+    
+                    print '
+                    <div class="container" style="min-height: 100vh;">
+                        <div class="box" style="margin: 0 auto; min-height: 100vh; max-width: 600px;">
+                            <div class="control" style="margin: 0 auto; max-width: 600px;">
+                                <div id="msgbox" class="box" style="">
+                                <p class="has-text-info" style="font-size: 2.3rem;">Thank you for Registering!</p>
+                                <p class="has-text-link" style="font-size: 1rem;">You\'ve successfully registered as <span style="color:black;"> '. $username .'</span></p>
+                                <p class="has-text-link" style="font-size: 1rem;">An email has been sent to: <span style="color:black"> '. $email .'</span></p>
+                                <p class="has-text-link" style="font-size: 1rem;">Please log in to send & receive messages!</p>
+                                <p class="has-text-info" style="font-size: 2.3rem;">Please Log In:</p>
+                                ' . messages_other_buttons("log_in_or_out") . ' 
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    ';
+                   
                 } else {
                     print '<p>Error: ' . mysqli_error($dbc_first) . '</p>';
                 }
                 
                 // create welcome page/message with message that an email has been sent. login will be on that page. SESSION will start at that time. 
-                mail($email, 'messaging_app220120 verification', 'Thank you for registering!');
-                print '<p>Welcome ' . $username . '! <br>An email has been sent to ' . $email . '</p>';
-
                 
-                // form_login_display();
-                // header('login.php');
-                
-                // $_POST = [];
-
-                //close DB connection
-                // close output buffering?
-                //close session? --- when should session start?
                 mysqli_close($dbc_first);
 
-                // temporary output
-                print '<p>FORM VERIFIED</p>';
+                
+               
 
             } else {
                 print '<p>ERROR encournterd when trying to register: ' . $username . ' </p>';
@@ -198,13 +208,6 @@ function form_register_display(
                 //close  DB connection
                 mysqli_close($dbc_first);
             }            
-
-            // create welcome page/message with message that an email has been sent. login will be on that page. SESSION will start at that time. 
-            
-            //close DB connection
-            
-            // temporary output
-            // print '<p>FORM VERIFIED</p>';
 
         } else {
             //sticky form vars
@@ -242,5 +245,8 @@ function form_register_display(
  ?>
 
  <!-- // include footer -->
-<?php include('templates/footer.html'); ?>
+<?php 
+include('templates/footer.html'); 
+print '<script> document.getElementById("footer").setAttribute("class", "box has-text-centered"); </script>';
+?>
 
