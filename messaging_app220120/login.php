@@ -3,7 +3,7 @@
 <?php
 define('TITLE', 'Login: messaging_app220120');
 include('templates/header.html');
-include('functions/functions_login_registration.php');
+include('functions/functions.php');
 
 
 function form_login_display($msg_username = 'Please enter your username:', $msg_password = 'Please enter your Password:') {

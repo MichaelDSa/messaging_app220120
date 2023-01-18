@@ -1,7 +1,7 @@
 <?php
 define('TITLE', 'more settings: messaging_app220120');
 include('templates/header.html');
-include('functions/functions_login_registration.php');
+include('functions/functions.php');
 session_start();
 session_user_logged_in();
 

@@ -1,5 +1,5 @@
 
-<?php // THESE ARE THE FUNCTIONS USED FOR: login.php & registratin.php
+<?php // THESE ARE THE FUNCTIONS USED FOR: messaging_app220120
 
 function form_contains_comma($str) {
     if(empty($str)){

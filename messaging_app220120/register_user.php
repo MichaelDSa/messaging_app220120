@@ -8,7 +8,7 @@
  */
 
 //include functions_login_register:
-include('functions/functions_login_registration.php');
+include('functions/functions.php');
 
 //define constant
 define('TITLE', 'Register: messaging_app220120');
