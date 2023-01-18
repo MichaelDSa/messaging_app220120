@@ -83,10 +83,10 @@ function form_contains_comma($str) {
 
         case 'password_1':
             if(!empty($_POST['password_1'])){
-                if( (strlen($_POST['password_1']) >= 4) && (strlen($_POST['password_1']) <= 10) ) {
+                if( (strlen($_POST['password_1']) >= 4) && (strlen($_POST['password_1']) <= 20) ) {
                     return $int == 0 ? true : 'O.K.<br>';
                 }else {                   
-                    return $int == 0 ? false : 'Password must be 4 to 10 characters in length.';
+                    return $int == 0 ? false : 'Password must be 4 to 20 characters in length.';
                 }                
             } else {
                     return $int == 0 ? false : 'Please enter a password.';
@@ -98,8 +98,8 @@ function form_contains_comma($str) {
             if(!empty($_POST['password_2'])){
                 if ($_POST['password_1'] == $_POST['password_2']) {
                     return  $int == 0 ? true : 'O.K.<br>';                
-                } else if( (strlen($_POST['password_2']) < 4) OR (strlen($_POST['password_2']) > 10) ) {                    
-                    return $int == 0 ? false : 'Password must be 4 to 10 characters in length.';
+                } else if( (strlen($_POST['password_2']) < 4) OR (strlen($_POST['password_2']) > 20) ) {                    
+                    return $int == 0 ? false : 'Password must be 4 to 20 characters in length.';
                 } else {                    
                     return $int == 0 ? false : 'Passwords must be identical';
                 }                
@@ -131,7 +131,7 @@ function form_contains_comma($str) {
             if(strlen($_POST['login_password']) < 4){
                 return $int == 0 ? false : 'Password not valid.';
             }
-            if(strlen($_POST['login_password']) > 10){
+            if(strlen($_POST['login_password']) > 20){
                 return $int == 0 ? false : 'Password not valid.';
             }
             if(user_password_matches($_POST['login_username'], $_POST['login_password'])){
