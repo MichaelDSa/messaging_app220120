@@ -176,8 +176,6 @@ function form_contains_comma($str) {
         default:
             Print 'This is the default case form_handler().';
             break;
-                
-        
     }
 }
 
@@ -356,113 +354,40 @@ function form_valid_usernames($array){
 
 }
 
-
-function messages_ajax_conversation_links($url, $body, $id, $delay = 10000){
-    print '
+function messages_ajax_wrapper($fn, $url, $body, $id, $delay, $msg){
+    print"
     <script>
 
-    async_conversation_links();
+    {$fn}();
 
-    async function async_conversation_links(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
-        
-        // fetch response from the url. Send the recipient variables through headers.
+    async function {$fn}(url = '{$url}', body = '{$body}', id = '{$id}', delay = '{$delay}', msg = '{$msg}'){
+
+        // fetch response from the url. Send the recipient variables throught headers.
         let response = await fetch(url, {
-            method: "POST", 
-            headers: {"content-type": "application/x-www-form-urlencoded"},
+            method: 'POST',
+            headers: {'content-type': 'application/x-www-form-urlencoded'},
             body: `async=${body}`,
-        });                    
-        
+        });
+
         // check if the response was successful.
         if(response.ok && response.status == 200){
-           
+
             // convert the response to text
             let text = await response.text();
-            
+
             // replace the inner html of the element identified by the id:
             document.getElementById(id).innerHTML = text;
-            
+
             // recursive call with delay:
-            setTimeout(() => async_conversation_links(url, body, id, delay), delay);
+            setTimeout(() => {$fn}(), delay);
             
         } else {
-            document.getElementById(id).innerHTML = "Start a conversation -- send someone a message!";
+            document.getElementById(id).innerHTML = '{$msg}';
         }
     }
     </script>
 
-    ';
-}
-
-function messages_ajax_display_conversation($url, $body, $id, $delay = 10000){
-    print '
-    <script>
-
-    async_get_conversation();
-
-    async function async_get_conversation(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
-        
-        // fetch response from the url. Send the variables through headers.
-        let response = await fetch(url, {
-            method: "POST", 
-            headers: {"content-type": "application/x-www-form-urlencoded"},
-            body: `sticky=${body}`,
-        });                    
-        
-        // check if the response was successful.
-        if(response.ok && response.status == 200){
-           
-            // convert the response to text
-            let text = await response.text();
-           
-            // replace the inner html of the id-identified element:
-            document.getElementById(id).innerHTML = text;
-
-            document.getElementById("message_form").scrollIntoView();
-            
-            // recursive call with delay:
-            setTimeout(() => async_get_conversation(url, body, id, delay), delay);
-            
-        } else {
-            document.getElementById(id).innerHTML = "Send a message! add recipients, or click on a conversation in the menu.";
-        }
-    }
-    </script>
-    ';
-}
-
-function messages_ajax_messages_menu_newmsg($url, $body, $id, $delay = 10000){
-    print '
-    <script>
-
-    async_menu_newmsg();
-
-    async function async_menu_newmsg(url = "' . $url . '", body = "' . $body . '", id = "' . $id . '", delay = ' . $delay . ') {
-        
-        // fetch response from the url. Send the recipient variables through headers.
-        let response = await fetch(url, {
-            method: "POST", 
-            headers: {"content-type": "application/x-www-form-urlencoded"},
-            body: `async=${body}`,
-        });                    
-        
-        // check if the response was successful.
-        if(response.ok && response.status == 200){
-           
-            // convert the response to text
-            let text = await response.text();
-            
-            // replace the inner html of the element identified by the id:
-            document.getElementById(id).innerHTML = text;
-            
-            // recursive call with delay:
-            setTimeout(() => async_menu_newmsg(url, body, id, delay), delay);
-            
-        } else {
-            document.getElementById(id).innerHTML = "";
-        }
-    }
-    </script>
-    ';
+    ";
 }
 
 function messages_menu_newmsg(){
@@ -526,8 +451,6 @@ function messages_display_conversation($recipients){
     $username = $_SESSION['session_username'];
     $participants = str_append_trim_sort($recipients, $username);
 
-    // print '<p>' . $username . '<br>' . $participants . '</p>';
-
     //now obtain data from mysql
     $username = mysqli_real_escape_string($dbc_first, $username);
     $participants = mysqli_real_escape_string($dbc_first, $participants);
@@ -538,7 +461,6 @@ function messages_display_conversation($recipients){
         $conversation[] = array('participants' => $row['participants'], 'speaker' => $row['speaker'], 'message' => $row['message'], 'date_entered' => $row['date_entered']);
     }
 
-    //class=("columns is-centered")("level-right")("level-left")
     print '';
     $c = count($conversation);
     for($i=0; $i<$c; $i++){       
@@ -555,7 +477,7 @@ function messages_display_conversation($recipients){
         ';
 
     }
-    print '</div> </div> </div> </div></div></div><script>document.getElementById("footer").scrollIntoView();</script>';
+    print '</div> </div> </div> </div></div></div>';
 
     //set the "viewed" column to 1 in all messages that have been printed:    
     $query_viewed =  "UPDATE `$username` SET viewed=1 WHERE participants='$participants'";
@@ -735,8 +657,6 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
         case 'logged_in':
             return $has_logged_in;
     }
-
- 
 }
 
 //returns number of unread messages of a particular conversation.
@@ -804,64 +724,6 @@ function messages_send($speaker, $recipients, $message){
     }
 
     mysqli_close($dbc_first);
-
-}
-
-//abandoned idea. another time.
-function messages_send2($speaker, $recipients, $message){
-    $array_recipients = form_separate_recipient_usernames($recipients);
-    $array_recipients = form_valid_usernames($array_recipients);
-    sort($array_recipients, SORT_NATURAL | SORT_FLAG_CASE);
-    $count_array_recipients = count($array_recipients);
-
-    include('../mysqli_connect_first.php');
-    for($i=0; $i<$count_array_recipients + 1; $i++){
-        $username = array_shift($array_recipients);
-        if($username == $speaker){
-            $username = array_shift($array_recipients);
-        }
-        $array_recipients[] = $username;//I want the list to be sorted, but have the username as the 2nd last index, and...
-        $array_recipients[] = $speaker;//I want the speaker(person who sent the message) to be at the last index.
-        $participants = implode(' ', $array_recipients);
-
-        //all variables undergo escape string prevention:
-        $username = mysqli_real_escape_string($dbc_first, $username);
-        $participants = mysqli_real_escape_string($dbc_first, $participants);
-        $speaker = mysqli_real_escape_string($dbc_first, $speaker);
-        $message = mysqli_real_escape_string($dbc_first, $message);
-        
-        //make the query for the $speaker (the person sending the message)
-        //within this loop, $speaker is ALWAYS at the end of the array, so break if successful.
-        if($i == $count_array_recipients){
-            $query = "INSERT INTO `$speaker` (username, participants, speaker, message, viewed, date_entered) VALUES ('$speaker', '$participants', '$speaker', '$message', 0, NOW())";
-            mysqli_query($dbc_first, $query);
-            break;
-        }
-        
-        //a test to see which usernames are being queried.
-        // print '<p>' . $i . ') ' . $username . ' | </p>';
-        
-        //now make the query for the each of the participants, including the current user ($username).
-        //but don't make duplicate entries in anyone's table
-        if($username !== $speaker){
-            $query = "INSERT INTO `$username` (username, participants, speaker, message, viewed, date_entered) VALUES ('$username', '$participants', '$speaker', '$message', 0, NOW())";
-            mysqli_query($dbc_first, $query);
-        }
-        
-        //a simple test to see if the query worked.
-        // if(mysqli_affected_rows($dbc_first) == 1){
-        //     print '</p> affected rows = 1</p>';
-        // } else {
-        //     print '<p>See query</p>';
-        // }        
-
-        //now remove $speaker so that it can be tacked on to the end of the array on next iteration.
-        array_pop($array_recipients);
-    }
-    mysqli_close($dbc_first);
-
-    
-
 
 }
 
@@ -1046,7 +908,6 @@ function user_password_matches($username, $password) {
     mysqli_close($dbc_first);
 
     return $matches;
-    
 
 }
 

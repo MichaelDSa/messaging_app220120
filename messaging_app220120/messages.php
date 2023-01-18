@@ -51,10 +51,9 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
 
                 <!--  AJAX for updating conversation:
                       Other ajax calls have a php wrapper.
-                      This async_get_conversation() is included in this print statement to
+                      async_get_conversation() is included in this print statement to
                       maintain scrolling behaviours which depend on code in this print statement.
-                      wrapping async_get_conversation() would then not be in scope of the scrolling behaviour code
-                      which is printed at the end of this print statement. -->
+                      Scrolling behoaviour code must be within the scope of the async function in question. -->
                 <script> 
                 
 
@@ -96,10 +95,30 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 }
                 </script>
                 ';
+                
+                //PHP WRAPPERS FOR JS ASYNC FUNCTIONS:
+
                 //scrolling behaviour is better when async function for displaying messages is not wrapped in a php function.
-                // messages_ajax_display_conversation("http://localhost/messaging_app220120/ajax_messages_display_conversation.php", $sticky_recipients, "conversation", 3000); 
-                messages_ajax_conversation_links("http://localhost/messaging_app220120/ajax_messages_conversation_links.php", "participants", "ajxmenu", 3500);  
-                messages_ajax_messages_menu_newmsg("http://localhost/messaging_app220120/ajax_messages_menu_newmsg.php", "menu_message", "menu_message", 3500);
+                
+
+                // CONVERSATION LINKS WITH NEW MESSAGE INDICATORS:
+                $fn_1 = 'async_conversation_links';
+                $url_1 = "http://localhost/messaging_app220120/ajax_messages_conversation_links.php";
+                $body_1 = 'participants';
+                $id_1 = 'ajxmenu';
+                $delay_1 = 3500;
+                $msg_1 = 'Send a message! Start a conversation.';
+                messages_ajax_wrapper($fn_1, $url_1, $body_1, $id_1, $delay_1, $msg_1);
+
+                // MENU NEW MESSAGE INDICATOR:
+                $fn_2 = 'async_menu_newmsg';
+                $url_2 = "http://localhost/messaging_app220120/ajax_messages_menu_newmsg.php";
+                $body_2 = 'menu_message';
+                $id_2 = 'menu_message';
+                $delay_2 = 3500;
+                $msg_2 = '';
+                messages_ajax_wrapper($fn_2, $url_2, $body_2, $id_2, $delay_2, $msg_2);
+
                 print '
                 <script>
                 
