@@ -124,7 +124,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             
         } else {
 
-            $msg = '<p class="has-text-danger"style="font-size: 1.2rem;">User Error:</p><span class="has-text-danger">Double check current password.<br>Both new passwords must be identical.<br>Passwords must be 4 to 10 characters in length.</span>';
+            $msg = '<p class="has-text-danger"style="font-size: 1.2rem;">User Error:</p><span class="has-text-danger">Double check current password.<br>Both new passwords must be identical.<br>Passwords must be 4 to 20 characters in length.</span>';
 
             more_settings_display();
             change_password_form($user, $msg);
