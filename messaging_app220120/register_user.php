@@ -162,6 +162,8 @@ function form_register_display(
             $query = "INSERT INTO authentication (username, email, password, date) VALUES ('$username', '$email', '$password', NOW())";
             mysqli_query($dbc_first, $query);
 
+          
+
             //test the query
             if(mysqli_affected_rows($dbc_first) == 1) {
                

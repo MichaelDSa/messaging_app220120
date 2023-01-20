@@ -10,17 +10,30 @@ session_user_logged_in();
 
 
 function form_send_message_display($msg_recipients = '', $msg_message = '', $sticky_recipients = '', $sticky_message = '') {
+
+    // set up message area for form_handler() messages.
+    $trib = '<div class="has-text-centered is-size-7" style="padding: 5px 5px; margin-bottom: 5px;">messaging_app220120 by Michael D\'Sa</div>';
+    $form_handler_message = '';
+    if($msg_recipients != '' || $msg_message != ''){
+        $msg_recipients = $msg_recipients == '' ? $msg_recipients : '<div class="box has-background-danger-light has-text-danger" style="border: 1px solid; padding: 5px 5px; margin-bottom: 5px;">' . $msg_recipients . '</div>';
+        $msg_message = $msg_message == '' ? $msg_message : '<div class="box has-background-danger-light has-text-danger" style="border: 1px solid;padding: 5px 5px; margin-bottom: 2px;" >' . $msg_message . '</div>';
+
+        $form_handler_message = $msg_recipients . $msg_message;
+    }
+    $form_handler_message .= $trib;
     
     print '
     <div class="container">
         <div class="control" style="margin: 0 auto; max-width: 600px;">
             <div id="msgbox" class="box">
-            <div id="conversation"></div>  
+            <div id="conversation"></div> 
+            ' . $form_handler_message . ' 
             <div id="interface_position" class="" style="border-radius: 5px;">          
             <span id="menu" class="button is-small is-link has-text-white" style="padding: 0px 12px; margin-top: 0rem; width:100%;border-radius: 5px;">menu
                 <span id="menu_message" class="has-text-white" style="background-color: hsl(0, 100%, 77%); border-radius:10px; padding: 0px 10px; margin:3px 5px;">
                 </span>
             </span>
+            
             <div id="menu-div" class="box is-hidden" style="max-height:240px; width:auto;overflow: auto;" >
                 <p class="has-text-info">other conversations:</p>
                 <div id="ajxmenu"></div>
@@ -28,7 +41,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 <div id="other">' . messages_other_buttons("menu_buttons", $sticky_recipients) . '</div>
             </div>
  
-                <div class=" box level" style="width:100%; padding:0px; margin: 10px 0px 1.5rem 0px;">
+                <div class=" box level" style="width:100%; padding:0px; margin: 10px 0px 0px 0px;">
                 <div class="level-item">
                         <form id="message_form" action="messages.php" method="post" style="width:100%;">
                             <div class="field has-addons">                                
@@ -137,6 +150,8 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 }  
                 </script>
                 ';
+    
+
 
 }
 
@@ -154,8 +169,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //send messages to database
         messages_send($speaker, $recipients, $msg);
         
+        //clean up the recipients sticky
+        $sticky_recipients = str_append_trim_sort($recipients, $speaker); //append sender to recipients
+        $recipients_array = form_separate_recipient_usernames($sticky_recipients);//remove duplicates and names with commas.
+        $sticky_recipients = $recipients_array == false ? '' : implode(' ', $recipients_array);
+
         //display form with sticky recipients 
-        $sticky_recipients = str_append_trim_sort($recipients, $speaker);
         form_send_message_display('','', $sticky_recipients, '');
 
     } else if (isset($_POST['unique_conversation']) ){ //if user selects a past conversation button
@@ -173,10 +192,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     } else if(isset($_POST['delete']) ){ //is user selects the 'delete this conversation...' button
         // 'delete' must be set and 'delete' must be identical to current conversation recipients.
-        include('../mysqli_connect_first.php');            
+        include('../mysqli_connect_second.php');            
         $part = $_POST['delete'];
-        $participants = mysqli_real_escape_string($dbc_first, $part);
-        mysqli_close($dbc_first);
+        $participants = mysqli_real_escape_string($dbc_second, $part);
+        mysqli_close($dbc_second);
 
         //delete conversation from user table:
         if(!messages_delete_conversation($participants)){
@@ -189,7 +208,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     } else { //resubmit form with messages and stickies
         $recipients_array = form_separate_recipient_usernames($_POST['recipients']);
         $recipients_valid_array = form_valid_usernames($recipients_array);
-        $recipients_valid_string = $recipients_valid_array == false ? '' : implode(', ', $recipients_valid_array);
+        $recipients_valid_string = $recipients_valid_array == false ? '' : implode(' ', $recipients_valid_array);
 
         $msg_recipients = form_handler('recipients', 1);
         $msg_message = form_handler('message', 1);
@@ -206,5 +225,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 
 
-include('templates/footer.html');
+// include('templates/footer.html');
+print'
+<style>
+@media(max-width: 440px){
+    #msgbox, #footer{
+        padding: 5px;
+    }
+}
+</style>
+';
+ob_end_flush();
 ?>

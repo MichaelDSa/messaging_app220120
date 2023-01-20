@@ -1,3 +1,4 @@
+<?php
 // this mysqli_connect is for the database messaging_app220120 and the app of the same name.
 /**********************************************************************************
 MySQL COMMANDS USED BEFORE CONNECTING:
@@ -9,6 +10,6 @@ CREATE TABLE authentication(id INT UNSIGNED NOT NULL AUTO_INCREMENT, username VA
 
 (Yes, I know there's a problem with the first GRANT statement, it should have 'messaging_app220120.*' INSTEAD OF 'messaging_app220120')
 ***********************************************************************************/
-<?php
+
 $dbc_second = mysqli_connect('localhost', 'second', '1234', 'messaging_app220120');
 mysqli_set_charset($dbc_second, 'utf8');

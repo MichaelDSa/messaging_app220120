@@ -12,6 +12,18 @@ function form_contains_comma($str) {
 
 }
 
+function form_contains_unwanted_char($str){
+    $unwanted = ['<', '>', "'", '"', '{', '}', '\\', '/'];
+
+    $c = count($unwanted);
+    for($i=0; $i<$c; $i++){
+        if(strtok($str, $unwanted[$i]) !== $str){
+            return true;
+        }
+    }
+
+    return false;
+}
 
 //PUT IN INCLUDE FILE
  /**
@@ -44,6 +56,9 @@ function form_contains_comma($str) {
             if(strlen($_POST['username']) > 10) {
                 return $int == 0 ? false : 'Username must be 5 to 10 characters in length.';
             }      
+            if(form_contains_unwanted_char($_POST['username'])){
+                return $int == 0 ? false : 'Username can\'t use following characters: < > \' " } { \\ /';
+            }
             if(user_exists($_POST['username'])){
                 return $int == 0 ? false : 'Sorry! That username is already taken.'; 
             }                        
@@ -65,6 +80,9 @@ function form_contains_comma($str) {
             if(strlen($_POST['username2']) > 10) {
                 return $int == 0 ? false : 'Username must be 5 to 10 characters in length. Usernames must be identical.';
             }    
+            if(form_contains_unwanted_char($_POST['username'])){
+                return $int == 0 ? false : 'Username can\'t use following characters: < > \' " } { \\ /';
+            }
             if(user_exists($_POST['username2'])){
                 return $int == 0 ? false : 'Sorry! That username is already taken.'; 
             }                                
@@ -119,6 +137,9 @@ function form_contains_comma($str) {
             if(strlen($_POST['login_username']) > 10){
                 return $int == 0 ? false : 'Username not found.';
             }
+            if(form_contains_unwanted_char($_POST['login_username'])){
+                return $int == 0 ? false : 'Username not found';
+            }
             if(user_exists($_POST['login_username'])){
                 return $int == 0 ? true : 'Username O.K.! ';
             }
@@ -163,13 +184,13 @@ function form_contains_comma($str) {
                 return $int == 0 ? false : '';
             }
             if(empty($_POST['message'])){
-                return $int == 0 ? false : ' No blank messages, please.';
+                return $int == 0 ? false : 'No blank messages, please.';
             }
             if(!form_handler('recipients', 0)){
-                return $int == 0 ? false : ' Cannot send.';
+                return $int == 0 ? false : 'Message not sent.';
             }
 
-            return $int == 0 ? true : ' Sending...';
+            return $int == 0 ? true : 'Sending...';
             
             break;
 
@@ -207,8 +228,9 @@ function form_invalid_usernames($array){
                 if(is_array($valid_usernames_array) && is_countable($valid_usernames_array)){
                     if((array_search($array[$i], $valid_usernames_array, true)  === false)) {
                         // unset($array[$i]);
-                        $invalid_usernames_array[$ii++] = $array[$i];            
-                        // print 'here';
+                        $baduser = htmlentities($array[$i]);
+                        $invalid_username_index = htmlspecialchars($baduser);
+                        $invalid_usernames_array[$ii++] = $invalid_username_index;  
                     }
                 }
             }
@@ -339,6 +361,9 @@ function form_valid_usernames($array){
         if(strlen($array[$i]) > 10){
             continue;
         }
+        if(form_contains_unwanted_char($array[$i])){
+            continue;
+        }
         if(!user_exists($array[$i])){
             continue;
         }
@@ -413,28 +438,28 @@ function messages_delete_conversation($participants){
         return false;
     }
 
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
 
-    $tablename = mysqli_real_escape_string($dbc_first, $_SESSION['session_username']);
+    $tablename = mysqli_real_escape_string($dbc_second, $_SESSION['session_username']);
     $part_array = form_separate_recipient_usernames($participants);
     $part_implode = implode(' ', $part_array);
-    $participants = mysqli_real_escape_string($dbc_first, $part_implode);
+    $participants = mysqli_real_escape_string($dbc_second, $part_implode);
 
     
     $query ="DELETE FROM {$tablename} WHERE participants='{$participants}'";
 
-    mysqli_query($dbc_first, $query);
+    mysqli_query($dbc_second, $query);
 
     //error report and redirect:
-    if(mysqli_affected_rows($dbc_first) < 0){
+    if(mysqli_affected_rows($dbc_second) < 0){
         $date = date('g:ia, l F j, Y ');
         $msg = $date . ": 'function messages_delete_conversation({$participants})' was unsuccessful." . PHP_EOL . "Query: {$query}" . PHP_EOL . "mysqli_affected_rows() is less than 0. ERROR: " . mysqli_error() .PHP_EOL;
         file_put_contents("log_delete_conversation.txt", $msg, FILE_APPEND);
         print "see log <br>";
-        mysqli_close($dbc_first);
+        mysqli_close($dbc_second);
         return false;
     } else {
-        mysqli_close($dbc_first);
+        mysqli_close($dbc_second);
         return true;
     }
 
@@ -446,16 +471,16 @@ function messages_display_conversation($recipients){
         return;
     }
 
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
 
     $username = $_SESSION['session_username'];
     $participants = str_append_trim_sort($recipients, $username);
 
     //now obtain data from mysql
-    $username = mysqli_real_escape_string($dbc_first, $username);
-    $participants = mysqli_real_escape_string($dbc_first, $participants);
+    $username = mysqli_real_escape_string($dbc_second, $username);
+    $participants = mysqli_real_escape_string($dbc_second, $participants);
     $query = "SELECT * FROM `$username` WHERE participants='$participants' ORDER BY date_entered ASC";
-    $query_result = mysqli_query($dbc_first, $query);
+    $query_result = mysqli_query($dbc_second, $query);
 
     while($row = mysqli_fetch_array($query_result)){
         $conversation[] = array('participants' => $row['participants'], 'speaker' => $row['speaker'], 'message' => $row['message'], 'date_entered' => $row['date_entered']);
@@ -481,10 +506,10 @@ function messages_display_conversation($recipients){
 
     //set the "viewed" column to 1 in all messages that have been printed:    
     $query_viewed =  "UPDATE `$username` SET viewed=1 WHERE participants='$participants'";
-    mysqli_query($dbc_first, $query_viewed);
+    mysqli_query($dbc_second, $query_viewed);
 
     
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
     
 }
 
@@ -574,11 +599,11 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
     $style_settings_buttons = 'margin:2px; width:50%;';
     
     //other variables:
-    include('../mysqli_connect_first.php');
-    $user = mysqli_real_escape_string($dbc_first, $_SESSION['session_username']);
+    include('../mysqli_connect_second.php');
+    $user = mysqli_real_escape_string($dbc_second, $_SESSION['session_username']);
     $itslog = session_user_logged_in(1) ? 'logout' : 'login';
     $sticky_recipients = isset($sticky_recipients) ? $sticky_recipients : "";
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     //BUTTONS:
 
@@ -677,16 +702,16 @@ function messages_conversation_unread($participants){
     }
 
     //Now check if $participants have any viewed=0 in DB:
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
 
     $table_username = $_SESSION['session_username'];
     $query = "SELECT viewed from `$table_username` WHERE participants='$participants'";
-    $query_result = mysqli_query($dbc_first, $query);
+    $query_result = mysqli_query($dbc_second, $query);
     while($row = mysqli_fetch_array($query_result)){
         $viewed[] = $row['viewed'];
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     $new_message = 0;
     
@@ -700,7 +725,7 @@ function messages_conversation_unread($participants){
 }
 
 function messages_send($speaker, $recipients, $message){
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
     //preparing participants data
     $participants = str_append_trim_sort($recipients, $speaker);
     $part = form_separate_recipient_usernames($participants);
@@ -710,37 +735,37 @@ function messages_send($speaker, $recipients, $message){
     $array_recipients = form_separate_recipient_usernames($participants);
 
     //escaped data for columns: username|participants|speaker|message|viewed|date_entered
-    $participants = mysqli_real_escape_string($dbc_first, $participants);
-    $speaker = mysqli_real_escape_string($dbc_first, $speaker);
-    $message = mysqli_real_escape_string($dbc_first, $message);
+    $participants = mysqli_real_escape_string($dbc_second, $participants);
+    $speaker = mysqli_real_escape_string($dbc_second, $speaker);
+    $message = mysqli_real_escape_string($dbc_second, $message);
 
     //iterate through recipients adding data to each user's table.
     for($i=0; $i<count($array_recipients); $i++){
-        $username = mysqli_real_escape_string($dbc_first, $array_recipients[$i]);
+        $username = mysqli_real_escape_string($dbc_second, $array_recipients[$i]);
         
         $query = "INSERT INTO `$username` (username, participants, speaker, message, viewed, date_entered) VALUES ('$username', '$participants', '$speaker', '$message', 0, NOW())";
-        mysqli_query($dbc_first, $query);
+        mysqli_query($dbc_second, $query);
 
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
 }
 
 //returns an array of the unique participant members of each separate conversation.
 function messages_unique_conversations(){
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
 
     $table_username = $_SESSION['session_username'];
     $query = "SELECT DISTINCT participants FROM `$table_username`";
 
-    $query_result = mysqli_query($dbc_first, $query);  
+    $query_result = mysqli_query($dbc_second, $query);  
     
     while($row = mysqli_fetch_array($query_result)){
         $unique_conversations[] = $row['participants'];            
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     if(!isset($unique_conversations)){
         return;
@@ -847,16 +872,16 @@ function str_append_trim_sort($str_list, $str_append){
 
 // 1) check if user has table
 function user_has_table($str) {
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
     $user_has_table = false;
-    $tablename = mysqli_real_escape_string($dbc_first, $str);
+    $tablename = mysqli_real_escape_string($dbc_second, $str);
     $query = "SELECT 1 from `$tablename` LIMIT 1";
     
-    if(mysqli_query($dbc_first, $query)){
+    if(mysqli_query($dbc_second, $query)){
         $user_has_table = true;
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     return $user_has_table;
 
@@ -865,14 +890,14 @@ function user_has_table($str) {
 // 2) check if user's name is entered in authentication table.
 function user_in_authentication($str) {
 
-    include('../mysqli_connect_first.php');
+    include('../mysqli_connect_second.php');
     $user_in_authentication_table = false;
 
-    $username = mysqli_real_escape_string($dbc_first, $str);    
-    $query2 = "SELECT `username` FROM `authentication` WHERE username='$username'";
+    $username = mysqli_real_escape_string($dbc_second, $str);    
+    $query = "SELECT `username` FROM `authentication` WHERE username='$username'";
     
     // this searches for the user name
-    if($r = mysqli_query($dbc_first, $query2)){
+    if($r = mysqli_query($dbc_second, $query)){
         $row = mysqli_fetch_array($r);        
     }
 
@@ -881,21 +906,21 @@ function user_in_authentication($str) {
         $user_in_authentication_table = true;
     }
     
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     return $user_in_authentication_table;
 
 }
 
 function user_password_matches($username, $password) {
-    include('../mysqli_connect_first.php');
-    $username_clean = mysqli_real_escape_string($dbc_first, $username);
-    $password_clean = mysqli_real_escape_string($dbc_first, $password);
+    include('../mysqli_connect_second.php');
+    $username_clean = mysqli_real_escape_string($dbc_second, $username);
+    $password_clean = mysqli_real_escape_string($dbc_second, $password);
     $matches = false;
 
     $query = "SELECT `password` FROM `authentication` WHERE `username`='$username_clean'";
 
-    if($r = mysqli_query($dbc_first, $query)){
+    if($r = mysqli_query($dbc_second, $query)){
         $row = mysqli_fetch_array($r);
     }
 
@@ -905,7 +930,7 @@ function user_password_matches($username, $password) {
         }
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     return $matches;
 
@@ -915,17 +940,17 @@ function user_password_change($username, $new_password) {
 
     $success = FALSE;
 
-    include('../mysqli_connect_first.php');
-    $username_clean = mysqli_real_escape_string($dbc_first, $username);
-    $password_clean = mysqli_real_escape_string($dbc_first, $new_password);
+    include('../mysqli_connect_second.php');
+    $username_clean = mysqli_real_escape_string($dbc_second, $username);
+    $password_clean = mysqli_real_escape_string($dbc_second, $new_password);
 
     $query = "UPDATE authentication SET password='$new_password' WHERE username='$username_clean'";
 
-    if(mysqli_query($dbc_first, $query) !== FALSE){
+    if(mysqli_query($dbc_second, $query) !== FALSE){
         $success = TRUE;
     }
 
-    mysqli_close($dbc_first);
+    mysqli_close($dbc_second);
 
     return $success;
 }
