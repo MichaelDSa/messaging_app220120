@@ -1,7 +1,0 @@
-2210050808|from: |to: p221003 - 0833
-------------------------------------
-
-SEE p221003 - 0833 for todolist. 
-
-CODE FOR THE APP BELONGS IN: C:\Users\dsa21\OneDrive\Desktop\zettelkasten\Literature Notes\AAA Programming\Code Bank - My experiments\PHP 220120
-
