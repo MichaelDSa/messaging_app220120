@@ -14,8 +14,9 @@ function more_settings_display(){
                 <div id="msgbox" class="box" style="">
                 <p class="has-text-info" style="font-size: 2.3rem; white-space: nowrap;">more settings</p>
                 ' . messages_other_buttons("settings_buttons") . '
-
-
+            </div>
+        </div>
+    
     ';
 }
 
