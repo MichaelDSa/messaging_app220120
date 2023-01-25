@@ -88,5 +88,4 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 
 include('templates/footer.html');
-// print '<script> document.getElementById("footer").setAttribute("class", "box has-text-centered"); </script>';
 ?>

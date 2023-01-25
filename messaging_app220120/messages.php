@@ -2,7 +2,6 @@
 define('TITLE', 'send/receive: messaging_app220120');
 include('templates/header.html');
 include('functions/functions.php');
-include('functions/functions_messages.php');
 session_start();
 session_user_logged_in();
 
@@ -12,7 +11,7 @@ session_user_logged_in();
 function form_send_message_display($msg_recipients = '', $msg_message = '', $sticky_recipients = '', $sticky_message = '') {
 
     // set up message area for form_handler() messages.
-    $trib = '<div class="has-text-centered is-size-7" style="padding: 5px 5px; margin-bottom: 5px;">messaging_app220120 by Michael D\'Sa</div>';
+    $trib = '<div class="has-text-centered is-size-7" style="padding: 5px 5px; margin-bottom: 5px;">messaging_app220120 by Michael D\'Sa <a href="https://github.com/MichaelDSa" target="_blank" target="_blank" rel="noopener noreferrer">|GitHub|</a></div>';
     $form_handler_message = '';
     if($msg_recipients != '' || $msg_message != ''){
         $msg_recipients = $msg_recipients == '' ? $msg_recipients : '<div class="box has-background-danger-light has-text-danger" style="border: 1px solid; padding: 5px 5px; margin-bottom: 5px;">' . $msg_recipients . '</div>';
