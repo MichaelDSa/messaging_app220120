@@ -26,4 +26,4 @@ Possible next steps:
  > limit multiple log-ins of users.
  > Other settings, such as user profiles, set user icon, account deletion.
 
-* 220120_create_dump_restore: This folder used is during development only. Not for live use.
+* 220120_create_dump_restore: If necessary, can be found in folder of same name.
