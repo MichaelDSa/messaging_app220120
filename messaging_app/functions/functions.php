@@ -551,29 +551,27 @@ function messages_conversation_links(){
 
 }
 
-// returns list of buttons which link to admin pages such as logout.php, 
-function messages_other_buttons($selection = '', $sticky_recipients = ''){
-    if($selection == ''){
-        return;
-    }
-    
-    //inner functions for html templates
-    function label($for = '', $html = ''){
-        if($for == '' && $html == ''){
+
+//functions for html templates 
+//These used to be inner functions belonging to messages_other_buttons(), but
+//they cannot be redeclared (which is what happens when the outer function is called more than once per page).
+//So they cannot be inner functions.
+function label($for = '', $html = ''){
+    if($for == '' && $html == ''){
             return '</label>';
         }
         return "<label for='{$for}'>{$html}";
     }
-    function form($action = '', $method = ''){
+function form($action = '', $method = ''){
         if($action == '' && $method == ''){
             return '</form>';
         }
         return "<form action='{$action}' method='{$method}'>";
     }
-    function input_hidden($name, $value){
+function input_hidden($name, $value){
         return "<input type='hidden' name='{$name}' value='{$value}'>";
     }
-    function a($href = '', $class = '', $style = ''){
+function a($href = '', $class = '', $style = ''){
         if($href == '' && $class == '' && $style == ''){
             return '</a>';
         } 
@@ -582,13 +580,18 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
         $s = "style='{$style}'";
         return "<a {$h}{$c}{$s}>";        
     }
-    function button($class ='', $style = '', $value = '', $html = ''){
+function button($class ='', $style = '', $value = '', $html = ''){
         if($class == '' && $style == '' && $value == '' && $html == ''){
             return '</button>';
         }        
         return "<button class='{$class}' style='{$style}' value='{$value}'>{$html}";        
     }
-
+    
+// returns list of buttons which link to admin pages such as logout.php, 
+function messages_other_buttons($selection = '', $sticky_recipients = ''){
+        if($selection == ''){
+            return;
+        }
 
     // variables for class and style html attribute values
     $class_red_buttons = 'button is-danger is-light is-outlined is-small is-rounded';
@@ -630,13 +633,16 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
     //'Send Messages Now'
     $send_messages_button = a("messages.php", $class_blue_buttons_dark, $style_menu_buttons) . "Send Messages Now" . a();
 
+    //'About'
+    $about_button = a("about.php", $class_red_buttons, $style_menu_buttons) . "About messaging_app220120" . a();
+
 
     //BUTTON COLLECTIONS:
     // menu buttons:
-    $menu_buttons = $logout_button . $delete_conversation_button . $more_settings_button;
+    $menu_buttons = $about_button . $logout_button . $delete_conversation_button . $more_settings_button;
 
     // buttons for more_settings.php
-    $settings_buttons = $messaging_button . $change_password_button . $logout_button;
+    $settings_buttons = $messaging_button . $change_password_button . $logout_button . $about_button;
 
     // buttons for logout page:
     $logout_page_buttons = $logout_end_session . "<p class='has-text-info is-size-5' style='padding:30px 0px 15px 0px;'>Or send more messages/explore settings...</p>" . $more_settings_button . $messaging_button;
@@ -650,17 +656,24 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
     switch ($selection) {
 
         //individual buttons:
-        case 'log_in_or_out':
+        case 'about_button':
+            return $about_button;
+
+        case 'back_to_messaging':
+            return $messaging_button;
+
+            case 'log_in_or_out':
             return $logout_button;
 
         case 'logout_now':
             return $logout_end_session;
 
-        case 'back_to_messaging':
-            return $messaging_button;
-
+        case 'more_settings':
+            return $more_settings_button;
+            
         case 'register_button':
             return $register_button_big;
+
 
         
         // button collections:            

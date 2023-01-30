@@ -69,7 +69,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
                 <script> 
                 
 
-                let url = "http://localhost/messaging_app220120/ajax_messages_display_conversation.php";
+                let url = "http://localhost/messaging_app/ajax_messages_display_conversation.php";
                 let JS_sticky_recipients = document.getElementById("JS_sticky_recipients").getAttribute("value");       
                 
                 // async function   
@@ -115,7 +115,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
 
                 // CONVERSATION LINKS WITH NEW MESSAGE INDICATORS:
                 $fn_1 = 'async_conversation_links';
-                $url_1 = "http://localhost/messaging_app220120/ajax_messages_conversation_links.php";
+                $url_1 = "http://localhost/messaging_app/ajax_messages_conversation_links.php";
                 $body_1 = 'participants';
                 $id_1 = 'ajxmenu';
                 $delay_1 = 3500;
@@ -124,7 +124,7 @@ function form_send_message_display($msg_recipients = '', $msg_message = '', $sti
 
                 // MENU NEW MESSAGE INDICATOR:
                 $fn_2 = 'async_menu_newmsg';
-                $url_2 = "http://localhost/messaging_app220120/ajax_messages_menu_newmsg.php";
+                $url_2 = "http://localhost/messaging_app/ajax_messages_menu_newmsg.php";
                 $body_2 = 'menu_message';
                 $id_2 = 'menu_message';
                 $delay_2 = 3500;
