@@ -1,4 +1,4 @@
-<?php // messaging_app220120 register_user.php
+<?php // messaging_app220120 index.php
 /**
  * This app 
  * 1) registers a user.
@@ -30,7 +30,7 @@ function form_register_display2(
     ){
 
 print '
-<form action="register_user.php" method="post">' .
+<form action="index.php" method="post">' .
     $msg_username . '
 <p><label for="username">username: </label><input type="text" name="username" size="20" value="' . $sticky_username . '"></p><p>' .
     $msg_username2 . '</p>
@@ -96,7 +96,7 @@ function form_register_display(
 
         print '
         <div class="container">
-            <form class="box" style="margin:auto; max-width: 600px" action="register_user.php" method="post">
+            <form class="box" style="margin:auto; max-width: 600px" action="index.php" method="post">
                 <h2 class="title" style="margin-bottom: 0.5rem; text-align: center">Register New User</h2>
                 <p class="has-text-centered is-size-4">or login:</p>
                 <div style="width:50%; margin: 5px 25%">'. messages_other_buttons('log_in_or_out') .'</div>

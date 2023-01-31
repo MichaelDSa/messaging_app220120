@@ -615,8 +615,8 @@ function messages_other_buttons($selection = '', $sticky_recipients = ''){
     $logout_end_session = form("logout.php", "post") . input_hidden("log_out", "yes") . label("logout", "<span class='has-text-danger'>Click to log out:</span>") . button($class_red_buttons, $style_menu_buttons, "yes", "Log out Now." ) . button() . label() . form();
 
     //register new user button
-    $register_button = a("register_user.php") . button($class_blue_buttons, $style_menu_buttons, "register", "Register new user...") . button() . a();
-    $register_button_big = a("register_user.php", $class_blue_buttons_dark, $style_menu_buttons) . "Register New User" . a();
+    $register_button = a("index.php") . button($class_blue_buttons, $style_menu_buttons, "register", "Register new user...") . button() . a();
+    $register_button_big = a("index.php", $class_blue_buttons_dark, $style_menu_buttons) . "Register New User" . a();
 
     //'delete this conversation' button
     $delete_conversation_button = form("messages.php", "post") . input_hidden("delete", $sticky_recipients) . button($class_red_buttons, $style_menu_buttons, $sticky_recipients, "delete this conversation...") . button() . form();
